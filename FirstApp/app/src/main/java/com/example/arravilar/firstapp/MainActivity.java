@@ -3,10 +3,7 @@ package com.example.arravilar.firstapp;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
 
-
-import com.mapbox.mapboxsdk.constants.Style;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
@@ -23,15 +20,17 @@ public class MainActivity extends Activity {
         gpsLocation = new GpsLocation(this,null);
         myLocation = gpsLocation.getLocation();
 
-       
+
 
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
+
+        mapView
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
-
+                mapboxMap.setOnMyLocationChangeListener();
                 // Customize map with markers, polylines, etc.
             }
         });

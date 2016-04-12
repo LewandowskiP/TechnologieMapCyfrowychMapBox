@@ -3,8 +3,6 @@ package com.example.arravilar.firstapp;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
-
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;

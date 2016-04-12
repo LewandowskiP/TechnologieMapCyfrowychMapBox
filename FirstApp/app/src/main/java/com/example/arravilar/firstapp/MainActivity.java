@@ -3,6 +3,8 @@ package com.example.arravilar.firstapp;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
+
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -13,17 +15,11 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 public class MainActivity extends Activity {
 
     private MapView mapView;
-    private Location myLocation;
-    private GpsLocation gpsLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        gpsLocation = new GpsLocation(this,null);
-        myLocation = gpsLocation.getLocation();
-
-
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
@@ -31,8 +27,8 @@ public class MainActivity extends Activity {
             @Override
             public void onMapReady(final MapboxMap mapboxMap) {
                 mapboxMap.setMyLocationEnabled(true);
-                mapboxMap.setMinZoom(20);
-                mapboxMap.setMaxZoom(15);
+                mapboxMap.setMinZoom(5);
+                mapboxMap.setMaxZoom(20);
                 mapboxMap.setOnMyLocationChangeListener(new MapboxMap.OnMyLocationChangeListener()
                 {
                     @Override

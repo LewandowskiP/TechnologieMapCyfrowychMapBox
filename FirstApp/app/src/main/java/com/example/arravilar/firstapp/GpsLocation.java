@@ -57,16 +57,13 @@ public class GpsLocation implements LocationListener{
 
     public Location getLocation() {
         try {
-            locationManager = (LocationManager) mContext
-                    .getSystemService(Context.LOCATION_SERVICE);
+            locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
             Log.d("1", "1");
             // getting GPS status
-            isGPSEnabled = locationManager
-                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             Log.d("2", "2");
             // getting network status
-            isNetworkEnabled = locationManager
-                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
             Log.d("3", "3");
 
             if (!isGPSEnabled && !isNetworkEnabled) {
@@ -76,14 +73,14 @@ public class GpsLocation implements LocationListener{
                 this.canGetLocation = true;
                 // First get location from Network Provider
                 if (isNetworkEnabled) {
-                    ContextCompat.checkSelfPermission(mContext,
-                            Manifest.permission.ACCESS_COARSE_LOCATION);
+                    ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION);
                     if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == 0 &&
                             ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == 0);
-
                     Log.d("5", "5");
+
                     locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
                     Log.d("Network", "Network");
+
                     if (locationManager != null) {
                         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if (location != null) {
@@ -95,6 +92,7 @@ public class GpsLocation implements LocationListener{
                     if (location == null) {
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, this);
                         Log.d("GPS Enabled", "GPS Enabled");
+
                         if (locationManager != null) {
                             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             if (location != null) {

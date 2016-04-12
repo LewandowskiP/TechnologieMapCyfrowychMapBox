@@ -3,7 +3,13 @@ package com.example.arravilar.firstapp;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.View;
 
+
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.constants.Style;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
@@ -13,6 +19,7 @@ public class MainActivity extends Activity {
     private MapView mapView;
     private Location myLocation;
     private GpsLocation gpsLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,21 +28,31 @@ public class MainActivity extends Activity {
         myLocation = gpsLocation.getLocation();
 
 
-
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
-
-        mapView
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onMapReady(MapboxMap mapboxMap) {
-                mapboxMap.setOnMyLocationChangeListener();
-                // Customize map with markers, polylines, etc.
+            public void onMapReady(final MapboxMap mapboxMap) {
+                mapboxMap.setMyLocationEnabled(true);
+                mapboxMap.setOnMyLocationChangeListener(new MapboxMap.OnMyLocationChangeListener()
+                {
+                    @Override
+                    public void onMyLocationChange(Location location)
+                    {
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(new LatLng(gpsLocation.getLocation())) // set the camera's center position
+                                .zoom(25)  // set the camera's zoom level
+                                .tilt(20)  // set the camera's tilt
+                                .build();
+                                mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    }
+
+                });
             }
+
         });
     }
-
     // Add the mapView lifecycle to the activity's lifecycle methods
     @Override
     public void onResume() {

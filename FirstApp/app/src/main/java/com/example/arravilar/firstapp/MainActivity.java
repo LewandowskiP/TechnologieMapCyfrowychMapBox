@@ -1,11 +1,12 @@
 package com.example.arravilar.firstapp;
 
-import android.support.v7.app.AppCompatActivity;
+import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
-import android.os.Bundle;
+import android.util.Log;
 
 
+import com.mapbox.mapboxsdk.constants.Style;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
@@ -13,14 +14,20 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 public class MainActivity extends Activity {
 
     private MapView mapView;
-
+    private Location myLocation;
+    private GpsLocation gpsLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        gpsLocation = new GpsLocation(this,null);
+        myLocation = gpsLocation.getLocation();
+
+       
 
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
+
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
@@ -60,5 +67,6 @@ public class MainActivity extends Activity {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
+
 }
 

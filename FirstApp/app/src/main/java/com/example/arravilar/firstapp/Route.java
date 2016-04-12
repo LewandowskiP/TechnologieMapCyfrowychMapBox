@@ -2,13 +2,15 @@ package com.example.arravilar.firstapp;
 
 import android.location.Location;
 
+import com.mapbox.mapboxsdk.geometry.LatLng;
+
 import java.util.ArrayList;
 
 /**
  * Created by Przemysław on 2016-04-12.
  */
 public class Route {
-    private ArrayList<Location> points = new ArrayList<>();
+    private ArrayList<LatLng> points = new ArrayList<>();
     private String name;
     private int pointsNum;
 
@@ -17,7 +19,7 @@ public class Route {
         name = new String(Name);
         pointsNum = 0;
     }
-    public void addPoint(Location loc)
+    public void addPoint(LatLng loc)
     {
         points.add(loc);
         pointsNum++;
@@ -31,7 +33,7 @@ public class Route {
         return name;
     }
 
-    public Location getPoint(int num)
+    public LatLng getPoint(int num)
     {
         return points.get(num);
     }

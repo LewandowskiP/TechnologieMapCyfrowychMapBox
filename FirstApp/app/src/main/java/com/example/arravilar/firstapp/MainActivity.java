@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
                         CameraPosition cameraPosition = new CameraPosition.Builder()
                                 .target(new LatLng(mapboxMap.getMyLocation())) // set the camera's center position
                                 .zoom(mapboxMap.getCameraPosition().zoom)  // set the camera's zoom level
-                                .tilt(20)  // set the camera's tilt
+                                .tilt(mapboxMap.getCameraPosition().tilt)  // set the camera's tilt
                                 .build();
 
                                 mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

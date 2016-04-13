@@ -30,13 +30,13 @@ public class Main2Activity extends AppCompatActivity {
             RouteList currentList = GlobalValues.getInstance().getRouteList();
             currentList.addRoute(txtSaveRoute.getText().toString());
         }
-<<<<<<< HEAD
+
 
         GlobalValues.getInstance().setRecordRoute(true);
         onBackPressed();
-=======
+
         super.onBackPressed();
->>>>>>> 40bcee1d8ada3e43e47f7b4d243fb1ad8cc8f09d
+
 
     }
 }

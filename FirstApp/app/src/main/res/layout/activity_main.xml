@@ -6,6 +6,7 @@
     tools:context=".MainActivity">
 
     <!-- Set the starting camera position and map style using xml-->
+
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="fill_parent"
@@ -19,18 +20,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <ToggleButton
-        style="?android:attr/buttonStyleSmall"
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ddd"
-        android:id="@+id/center_button"
+        android:text="Zapisz trase"
+        android:id="@+id/btnSaveRoute"
+        android:onClick="routeSaveBtn"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:enabled="true"
-        android:focusable="false"
-        android:checked="true"
-        android:clickable="false" />
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

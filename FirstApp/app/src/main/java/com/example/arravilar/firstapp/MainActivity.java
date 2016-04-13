@@ -1,8 +1,13 @@
 package com.example.arravilar.firstapp;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -13,6 +18,9 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 public class MainActivity extends Activity {
 
     private MapView mapView;
+    public Button btnSaveRoute;
+    public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,14 @@ public class MainActivity extends Activity {
             }
 
         });
+    }
+
+
+    public void routeSaveBtn(View v) {
+        Intent intent = new Intent(this, Main2Activity.class);
+        String routeName = "Nowa trasa 1";
+        intent.putExtra(EXTRA_MESSAGE, routeName);
+        startActivity(intent);
     }
     // Add the mapView lifecycle to the activity's lifecycle methods
     @Override

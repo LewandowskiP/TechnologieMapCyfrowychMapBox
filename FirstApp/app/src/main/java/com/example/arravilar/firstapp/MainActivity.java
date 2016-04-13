@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
 
         btnSaveRoute = (Button) findViewById(R.id.btnSaveRoute);
         btnRec = (Button) findViewById(R.id.btnRec);
+        GlobalValues.getInstance().setRecordRoute(false);
 
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -74,9 +75,8 @@ public class MainActivity extends Activity {
 
     public void routeSaveBtn(View v) {
         if (GlobalValues.getInstance().getRecordRoute()==true) { //if really recording
-
             GlobalValues.getInstance().setRecordRoute(false); //stop recording
-            btnSaveRoute.setVisibility(View.INVISIBLE);
+            //btnSaveRoute.setVisibility(View.INVISIBLE);
 
             Intent intent = new Intent(this, Main2Activity.class);
             String routeName = "Nowa trasa 1";

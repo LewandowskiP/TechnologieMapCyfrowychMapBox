@@ -26,6 +26,8 @@
         android:id="@+id/btnSave"
         android:layout_below="@+id/txtSaveRoute"
         android:layout_alignRight="@+id/txtSaveRoute"
-        android:layout_alignEnd="@+id/txtSaveRoute" />
+        android:layout_alignEnd="@+id/txtSaveRoute"
+        android:enabled="true"
+        android:clickable="true" />
 
 </RelativeLayout>

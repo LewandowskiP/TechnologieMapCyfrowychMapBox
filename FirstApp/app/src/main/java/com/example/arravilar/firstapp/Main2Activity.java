@@ -33,7 +33,7 @@ public class Main2Activity extends AppCompatActivity {
             RouteList currentList = GlobalValues.getInstance().getRouteList();
             currentList.addRoute(txtSaveRoute.getText().toString());
         }
-
+        onBackPressed();
 
     }
 }

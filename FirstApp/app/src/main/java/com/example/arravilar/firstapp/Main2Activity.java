@@ -14,11 +14,8 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-
-        Intent intent = getIntent();
-        String routeName = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         EditText txtSaveRoute = (EditText)findViewById(R.id.txtSaveRoute);
-        txtSaveRoute.setText(routeName);
+        txtSaveRoute.setText("TmpRoute");
     }
 
     public void saveClick(View v){
@@ -28,13 +25,18 @@ public class Main2Activity extends AppCompatActivity {
             RouteList newList = new RouteList(this);
             GlobalValues.getInstance().setRouteList(newList);
             newList.addRoute(txtSaveRoute.getText().toString());
-
         }
         else{
             RouteList currentList = GlobalValues.getInstance().getRouteList();
             currentList.addRoute(txtSaveRoute.getText().toString());
         }
+<<<<<<< HEAD
+
+        GlobalValues.getInstance().setRecordRoute(true);
+        onBackPressed();
+=======
         super.onBackPressed();
+>>>>>>> 40bcee1d8ada3e43e47f7b4d243fb1ad8cc8f09d
 
     }
 }

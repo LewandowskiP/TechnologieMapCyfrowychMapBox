@@ -55,7 +55,9 @@ public class MainActivity extends Activity {
                     @Override
                     public void onMyLocationChange(Location location)
                     {
+                        Log.d("112","112");
                      if (GlobalValues.getInstance().getRecordRoute() == true) {
+                         Log.d("111","111");
                          GlobalValues.getInstance().getRouteList().getRoutes().get(GlobalValues.getInstance().getRouteList().getRouteNumber()-1).addPoint(new LatLng(mapboxMap.getMyLocation()));
                      }
                         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -74,13 +76,18 @@ public class MainActivity extends Activity {
 
 
     public void routeSaveBtn(View v) {
+<<<<<<< HEAD
+        if (GlobalValues.getInstance().getRecordRoute()==false) {
+            btnRec.setText("Save recorded points");
+            btnSaveRoute.setVisibility(View.INVISIBLE);
+            btnRec.setVisibility(View.VISIBLE);
+=======
         if (GlobalValues.getInstance().getRecordRoute()==true) { //if really recording
             GlobalValues.getInstance().setRecordRoute(false); //stop recording
             btnRec.setText("Record");
             btnSaveRoute.setVisibility(View.INVISIBLE);
+>>>>>>> 40bcee1d8ada3e43e47f7b4d243fb1ad8cc8f09d
             Intent intent = new Intent(this, Main2Activity.class);
-            String routeName = "Nowa trasa 1";
-            intent.putExtra(EXTRA_MESSAGE, routeName);
             startActivity(intent);
         }
     }
@@ -91,13 +98,9 @@ public class MainActivity extends Activity {
             //v.getBackground().clearColorFilter();
             btnRec.setText("Record");
             GlobalValues.getInstance().setRecordRoute(false);
-            btnSaveRoute.setVisibility(View.INVISIBLE);
-        }
-        else{
-            //v.getBackground().setColorFilter(0xff4444, null);
-            btnRec.setText("Recording");
-            GlobalValues.getInstance().setRecordRoute(true);
             btnSaveRoute.setVisibility(View.VISIBLE);
+            btnRec.setVisibility(View.INVISIBLE);
+            Log.d("123",GlobalValues.getInstance().getRouteList().getRoutes().get(GlobalValues.getInstance().getRouteList().getRouteNumber()-1).getPoint(0).toString());
         }
     }
 

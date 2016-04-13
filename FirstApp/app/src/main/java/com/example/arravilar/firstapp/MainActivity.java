@@ -3,6 +3,7 @@ package com.example.arravilar.firstapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -17,6 +19,8 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import android.graphics.PorterDuff.Mode;
+
+import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
@@ -76,17 +80,10 @@ public class MainActivity extends Activity {
 
 
     public void routeSaveBtn(View v) {
-<<<<<<< HEAD
         if (GlobalValues.getInstance().getRecordRoute()==false) {
             btnRec.setText("Save recorded points");
             btnSaveRoute.setVisibility(View.INVISIBLE);
             btnRec.setVisibility(View.VISIBLE);
-=======
-        if (GlobalValues.getInstance().getRecordRoute()==true) { //if really recording
-            GlobalValues.getInstance().setRecordRoute(false); //stop recording
-            btnRec.setText("Record");
-            btnSaveRoute.setVisibility(View.INVISIBLE);
->>>>>>> 40bcee1d8ada3e43e47f7b4d243fb1ad8cc8f09d
             Intent intent = new Intent(this, Main2Activity.class);
             startActivity(intent);
         }
@@ -103,6 +100,26 @@ public class MainActivity extends Activity {
             Log.d("123",GlobalValues.getInstance().getRouteList().getRoutes().get(GlobalValues.getInstance().getRouteList().getRouteNumber()-1).getPoint(0).toString());
         }
     }
+
+    public void showRoute(View v) {
+
+        Route route = GlobalValues.getInstance().getRouteList().getRoutes().get(0);
+        ArrayList<LatLng> points = route.getPoints();
+        if (points.size() > 0) {
+            final LatLng[]  pointsArray = points.toArray(new LatLng[points.size()]);
+            mapView.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(final MapboxMap mapboxMap) {
+                    // Draw Points on MapView
+                    mapboxMap.addPolyline(new PolylineOptions()
+                            .add(pointsArray)
+                            .color(Color.parseColor("#3bb2d0"))
+                            .width(2));
+                }
+            });
+        }
+    }
+
 
     // Add the mapView lifecycle to the activity's lifecycle methods
     @Override

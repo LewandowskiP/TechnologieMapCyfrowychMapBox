@@ -46,4 +46,14 @@
         android:clickable="true"
         android:visibility="invisible"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show route"
+        android:onClick="showRoute"
+        android:id="@+id/btnShowRoute"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

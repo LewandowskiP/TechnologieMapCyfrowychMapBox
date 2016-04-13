@@ -14,6 +14,10 @@ public class Route {
     private String name;
     private int pointsNum;
 
+    public ArrayList<LatLng> getPoints() {
+        return points;
+    }
+
     public Route(String Name)
     {
         name = new String(new String(Name));

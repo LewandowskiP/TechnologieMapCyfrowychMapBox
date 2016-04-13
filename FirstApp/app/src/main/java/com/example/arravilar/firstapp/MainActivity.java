@@ -16,6 +16,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import android.graphics.PorterDuffColorFilter;
 
 public class MainActivity extends Activity {
 
@@ -25,6 +26,7 @@ public class MainActivity extends Activity {
 
 
     public Button btnSaveRoute;
+    public Button btnRec;
     public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
 
 
@@ -35,6 +37,10 @@ public class MainActivity extends Activity {
             context = this.context;
         routeList = null;
         setContentView(R.layout.activity_main);
+
+        btnSaveRoute = (Button) findViewById(R.id.btnSaveRoute);
+        btnRec = (Button) findViewById(R.id.btnRec);
+
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
@@ -69,11 +75,34 @@ public class MainActivity extends Activity {
 
 
     public void routeSaveBtn(View v) {
-        Intent intent = new Intent(this, Main2Activity.class);
-        String routeName = "Nowa trasa 1";
-        intent.putExtra(EXTRA_MESSAGE, routeName);
-        startActivity(intent);
+        if (GlobalValues.getInstance().getRecordRoute()==true) { //if really recording
+
+            GlobalValues.getInstance().setRecordRoute(false); //stop recording
+            btnSaveRoute.setVisibility(View.INVISIBLE);
+
+            Intent intent = new Intent(this, Main2Activity.class);
+            String routeName = "Nowa trasa 1";
+            intent.putExtra(EXTRA_MESSAGE, routeName);
+            startActivity(intent);
+        }
     }
+
+    public void recordBtn(View v) {
+
+        if (GlobalValues.getInstance().getRecordRoute()==true){
+            //v.getBackground().clearColorFilter();
+            btnRec.setText("Record");
+            GlobalValues.getInstance().setRecordRoute(false);
+            btnSaveRoute.setVisibility(View.INVISIBLE);
+        }
+        else{
+            //v.getBackground().setColorFilter(0xff4444, null);
+            btnRec.setText("Recording");
+            GlobalValues.getInstance().setRecordRoute(true);
+            btnSaveRoute.setVisibility(View.VISIBLE);
+        }
+    }
+
     // Add the mapView lifecycle to the activity's lifecycle methods
     @Override
     public void onResume() {

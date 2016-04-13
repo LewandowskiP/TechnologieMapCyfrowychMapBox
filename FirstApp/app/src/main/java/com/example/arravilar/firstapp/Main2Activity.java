@@ -21,6 +21,19 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     public void saveClick(View v){
-        EditText txtSaveRoute =
+        EditText txtSaveRoute = (EditText)findViewById(R.id.txtSaveRoute);
+
+        if (GlobalValues.getInstance().getRouteList()==null){
+            RouteList newList = new RouteList(this);
+            GlobalValues.getInstance().setRouteList(newList);
+            newList.addRoute(txtSaveRoute.getText().toString());
+
+        }
+        else{
+            RouteList currentList = GlobalValues.getInstance().getRouteList();
+            currentList.addRoute(txtSaveRoute.getText().toString());
+        }
+
+
     }
 }

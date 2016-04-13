@@ -4,6 +4,7 @@ package com.example.arravilar.firstapp;
  * Created by Przemysław on 2016-04-12.
  */
 public class GlobalValues {
+
     private static GlobalValues globalValues;
     private boolean recordRoute;
     private RouteList routeList = null;

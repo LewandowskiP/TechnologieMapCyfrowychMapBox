@@ -5,12 +5,13 @@ package com.example.arravilar.firstapp;
  */
 public class GlobalValues {
 
-    private static GlobalValues globalValues;
+    private static GlobalValues globalValues =null;
     private boolean recordRoute;
-    private RouteList routeList = null;
+    private RouteList routeList;
     private GlobalValues()
     {
-
+        recordRoute = false;
+        routeList = null;
     }
     public static GlobalValues getInstance()
     {

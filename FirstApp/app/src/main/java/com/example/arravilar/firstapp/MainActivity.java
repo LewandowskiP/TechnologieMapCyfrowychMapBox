@@ -80,10 +80,23 @@ public class MainActivity extends Activity {
 
 
     public void routeSaveBtn(View v) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0362c6c9ee3d9fba8845e0208c643e3ef3adcd61
         if (GlobalValues.getInstance().getRecordRoute()==false) {
             btnRec.setText("Save recorded points");
             btnSaveRoute.setVisibility(View.INVISIBLE);
             btnRec.setVisibility(View.VISIBLE);
+<<<<<<< HEAD
+=======
+
+        if (GlobalValues.getInstance().getRecordRoute()==true) { //if really recording
+            GlobalValues.getInstance().setRecordRoute(false); //stop recording
+            btnRec.setText("Record");
+            btnSaveRoute.setVisibility(View.INVISIBLE);
+
+>>>>>>> 0362c6c9ee3d9fba8845e0208c643e3ef3adcd61
             Intent intent = new Intent(this, Main2Activity.class);
             startActivity(intent);
         }

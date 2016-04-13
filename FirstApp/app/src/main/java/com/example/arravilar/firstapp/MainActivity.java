@@ -21,7 +21,6 @@ import android.graphics.PorterDuffColorFilter;
 public class MainActivity extends Activity {
 
     private MapView mapView;
-    private RouteList routeList;
     private Context context;
 
 
@@ -35,7 +34,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
             context = this.context;
-        routeList = null;
+
         setContentView(R.layout.activity_main);
 
         btnSaveRoute = (Button) findViewById(R.id.btnSaveRoute);
@@ -57,8 +56,7 @@ public class MainActivity extends Activity {
                     public void onMyLocationChange(Location location)
                     {
                      if (GlobalValues.getInstance().getRecordRoute() == true) {
-                            if (routeList == null) routeList = new RouteList(context);
-                         routeList.getRoutes().get(routeList.getRouteNumber()-1).addPoint(new LatLng(mapboxMap.getMyLocation()));
+                         GlobalValues.getInstance().getRouteList().getRoutes().get(GlobalValues.getInstance().getRouteList().getRouteNumber()-1).addPoint(new LatLng(mapboxMap.getMyLocation()));
                      }
                         CameraPosition cameraPosition = new CameraPosition.Builder()
                                 .target(new LatLng(mapboxMap.getMyLocation())) // set the camera's center position

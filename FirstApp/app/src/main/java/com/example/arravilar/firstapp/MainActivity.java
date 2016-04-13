@@ -76,8 +76,8 @@ public class MainActivity extends Activity {
     public void routeSaveBtn(View v) {
         if (GlobalValues.getInstance().getRecordRoute()==true) { //if really recording
             GlobalValues.getInstance().setRecordRoute(false); //stop recording
-            //btnSaveRoute.setVisibility(View.INVISIBLE);
-
+            btnRec.setText("Record");
+            btnSaveRoute.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(this, Main2Activity.class);
             String routeName = "Nowa trasa 1";
             intent.putExtra(EXTRA_MESSAGE, routeName);

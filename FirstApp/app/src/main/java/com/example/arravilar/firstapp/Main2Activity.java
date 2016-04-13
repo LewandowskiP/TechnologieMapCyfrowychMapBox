@@ -1,5 +1,6 @@
 package com.example.arravilar.firstapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +22,7 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     public void saveClick(View v){
-        EditText txtSaveRoute = (EditText)findViewById(R.id.txtSaveRoute);
+       EditText txtSaveRoute = (EditText)findViewById(R.id.txtSaveRoute);
 
         if (GlobalValues.getInstance().getRouteList()==null){
             RouteList newList = new RouteList(this);
@@ -33,7 +34,7 @@ public class Main2Activity extends AppCompatActivity {
             RouteList currentList = GlobalValues.getInstance().getRouteList();
             currentList.addRoute(txtSaveRoute.getText().toString());
         }
-        onBackPressed();
+        super.onBackPressed();
 
     }
 }

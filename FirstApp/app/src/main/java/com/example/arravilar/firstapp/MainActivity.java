@@ -1,10 +1,8 @@
 package com.example.arravilar.firstapp;
 
-<<<<<<< HEAD
+
 import android.content.Context;
-=======
 import android.content.Intent;
->>>>>>> 6f2766d956a4497feae7edd0e26b833966cda996
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
@@ -22,17 +20,16 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 public class MainActivity extends Activity {
 
     private MapView mapView;
-<<<<<<< HEAD
     private RouteList routeList;
     private Context context;
-        @Override
-=======
+
+
     public Button btnSaveRoute;
     public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
 
 
     @Override
->>>>>>> 6f2766d956a4497feae7edd0e26b833966cda996
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
             context = this.context;

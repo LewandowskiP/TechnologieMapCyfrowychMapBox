@@ -18,8 +18,6 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import android.graphics.PorterDuff.Mode;
-
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {

@@ -100,47 +100,50 @@ public class RouteList {
     }
 
 
-    private ArrayList<Route> loadList()
-    {
+    private ArrayList<Route> loadList() {
+        String revicedString = "";
         try {
             // Load GeoJSON file
             InputStream inputStream = appContext.openFileInput("Rotues.geojson");
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder stringBuilder = new StringBuilder();
-            String revicedString = "";
             while ((revicedString = bufferedReader.readLine()) != null) {
                 stringBuilder.append(revicedString);
             }
             inputStream.close();
-
-            // Parse GeoJSON
-            JSONObject main = new JSONObject(revicedString.toString());
-            JSONArray features = main.getJSONArray("features");
-            routeNumber = features.length();
-            for (int routeIterator = 0; routeIterator < routeNumber; routeIterator++  ) {
-                JSONObject feature = features.getJSONObject(routeIterator);
-                JSONObject properties = feature.getJSONObject("properties");
-                String name = properties.getString("name");
-                routes.add(new Route(name));
-                JSONObject geometry = feature.getJSONObject("geometry");
-                if (geometry != null) {
-                    String type = geometry.getString("type");
-                    // Our GeoJSON only has one feature: a line string
-                    if (!TextUtils.isEmpty(type) && type.equalsIgnoreCase("LineString")) {
-                        // Get the Coordinates
-                        JSONArray coordinates = geometry.getJSONArray("coordinates");
-                        for (int pointIterator = 0; pointIterator < coordinates.length(); pointIterator++) {
-                            JSONArray coord = coordinates.getJSONArray(pointIterator);
-                            LatLng latLng = new LatLng(coord.getDouble(1), coord.getDouble(0));
-                            routes.get(routeIterator).addPoint(new LatLng(latLng));
-                        }
-                    }
-                }
-            }
         } catch (Exception e) {
             Log.e(null, "Exception Loading GeoJSON: " + e.toString());
         }
-        return routes;
+            try {
+                // Parse GeoJSON
+                JSONObject main = new JSONObject(revicedString.toString());
+                JSONArray features = main.getJSONArray("features");
+                routeNumber = features.length();
+                for (int routeIterator = 0; routeIterator < routeNumber; routeIterator++) {
+                    JSONObject feature = features.getJSONObject(routeIterator);
+                    JSONObject properties = feature.getJSONObject("properties");
+                    String name = properties.getString("name");
+                    routes.add(new Route(name));
+                    JSONObject geometry = feature.getJSONObject("geometry");
+                    if (geometry != null) {
+                        String type = geometry.getString("type");
+                        // Our GeoJSON only has one feature: a line string
+                        if (!TextUtils.isEmpty(type) && type.equalsIgnoreCase("LineString")) {
+                            // Get the Coordinates
+                            JSONArray coordinates = geometry.getJSONArray("coordinates");
+                            for (int pointIterator = 0; pointIterator < coordinates.length(); pointIterator++) {
+                                JSONArray coord = coordinates.getJSONArray(pointIterator);
+                                LatLng latLng = new LatLng(coord.getDouble(1), coord.getDouble(0));
+                                routes.get(routeIterator).addPoint(new LatLng(latLng));
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(null, "Exception Loading GeoJSON: " + e.toString());
+            }
+            return routes;
+        }
     }
 
-}
+

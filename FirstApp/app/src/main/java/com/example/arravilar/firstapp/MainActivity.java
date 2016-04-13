@@ -16,7 +16,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import android.graphics.PorterDuffColorFilter;
+import android.graphics.PorterDuff.Mode;
 
 public class MainActivity extends Activity {
 
@@ -76,10 +76,17 @@ public class MainActivity extends Activity {
 
 
     public void routeSaveBtn(View v) {
+<<<<<<< HEAD
         if (GlobalValues.getInstance().getRecordRoute()==false) {
             btnRec.setText("Save recorded points");
             btnSaveRoute.setVisibility(View.INVISIBLE);
             btnRec.setVisibility(View.VISIBLE);
+=======
+        if (GlobalValues.getInstance().getRecordRoute()==true) { //if really recording
+            GlobalValues.getInstance().setRecordRoute(false); //stop recording
+            btnRec.setText("Record");
+            btnSaveRoute.setVisibility(View.INVISIBLE);
+>>>>>>> 40bcee1d8ada3e43e47f7b4d243fb1ad8cc8f09d
             Intent intent = new Intent(this, Main2Activity.class);
             startActivity(intent);
         }

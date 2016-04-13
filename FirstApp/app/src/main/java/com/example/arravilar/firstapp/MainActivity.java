@@ -16,7 +16,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import android.graphics.PorterDuffColorFilter;
+import android.graphics.PorterDuff.Mode;
 
 public class MainActivity extends Activity {
 

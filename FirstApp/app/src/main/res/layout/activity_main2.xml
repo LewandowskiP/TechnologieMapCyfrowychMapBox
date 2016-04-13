@@ -16,14 +16,14 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:enabled="true"
-        android:editable="true" />
+        android:enabled="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Zapisz"
         android:id="@+id/btnSave"
+        android:onClick="saveClick"
         android:layout_below="@+id/txtSaveRoute"
         android:layout_alignRight="@+id/txtSaveRoute"
         android:layout_alignEnd="@+id/txtSaveRoute"

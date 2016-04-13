@@ -16,12 +16,12 @@ public class Route {
 
     public Route(String Name)
     {
-        name = new String(Name);
+        name = new String(new String(Name));
         pointsNum = 0;
     }
     public void addPoint(LatLng loc)
     {
-        points.add(loc);
+        points.add(new LatLng(loc));
         pointsNum++;
     }
 

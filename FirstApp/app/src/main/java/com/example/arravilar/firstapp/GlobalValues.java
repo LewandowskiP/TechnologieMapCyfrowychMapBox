@@ -10,7 +10,7 @@ public class GlobalValues {
     {
 
     }
-    public GlobalValues getInstance()
+    public static GlobalValues getInstance()
     {
         if (globalValues == null)
             globalValues = new GlobalValues();

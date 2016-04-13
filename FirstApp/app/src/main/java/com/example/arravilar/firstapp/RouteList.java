@@ -23,6 +23,11 @@ import java.util.ArrayList;
 public class RouteList {
 
     private ArrayList<Route> routes;
+
+    public int getRouteNumber() {
+        return routeNumber;
+    }
+
     private int routeNumber;
     Context appContext;
 
@@ -32,6 +37,14 @@ public class RouteList {
         appContext = context;
     }
 
+    public ArrayList<Route> getRoutes() {
+        return routes;
+    }
+
+    public void addRoute(String name){
+        routes.add(new Route(name));
+        routeNumber++;
+    }
 
     private void saveList() {
         //Construct GeoJSON file

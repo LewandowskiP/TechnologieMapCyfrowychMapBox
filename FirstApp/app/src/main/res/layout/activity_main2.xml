@@ -28,6 +28,6 @@
         android:layout_alignEnd="@+id/txtSaveRoute"
         android:enabled="true"
         android:clickable="true"
-        />
+        android:onClick="saveClick" />
 
 </RelativeLayout>

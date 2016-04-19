@@ -33,8 +33,6 @@ public class Main2Activity extends AppCompatActivity {
 
 
         GlobalValues.getInstance().setRecordRoute(true);
-        onBackPressed();
-
         super.onBackPressed();
 
 

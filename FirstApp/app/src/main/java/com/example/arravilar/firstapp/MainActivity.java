@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
             mapView.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(final MapboxMap mapboxMap) {
-                    // Draw Points on MapView
+
                     mapboxMap.addPolyline(new PolylineOptions()
                             .add(pointsArray)
                             .color(Color.parseColor("#3bb2d0"))
@@ -118,7 +118,16 @@ public class MainActivity extends Activity {
         }
     }
 
+    public void saveToFile(View v)
+    {
+        GlobalValues.getInstance().getRouteList().saveList();
+    }
 
+
+    public void loadFromFile(View v)
+    {
+        GlobalValues.getInstance().getRouteList().loadList();
+    }
     // Add the mapView lifecycle to the activity's lifecycle methods
     @Override
     public void onResume() {

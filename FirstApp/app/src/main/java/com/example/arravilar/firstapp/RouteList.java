@@ -46,7 +46,7 @@ public class RouteList {
         routeNumber++;
     }
 
-    private void saveList() {
+    public void saveList() {
         //Construct GeoJSON file
         JSONObject main=null;
         try {
@@ -100,7 +100,7 @@ public class RouteList {
     }
 
 
-    private ArrayList<Route> loadList() {
+    public ArrayList<Route> loadList() {
         String revicedString = "";
         try {
             // Load GeoJSON file

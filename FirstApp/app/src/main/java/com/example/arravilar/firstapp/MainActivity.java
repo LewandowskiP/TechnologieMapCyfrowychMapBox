@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
     }
 
 
-    public void routeSaveBtn(View v) {
+    public void routeSaveBtn(View v) { //realy its RECORD
         if (GlobalValues.getInstance().getRecordRoute()==false) {
             btnRec.setText("Save recorded points");
             btnSaveRoute.setVisibility(View.INVISIBLE);
@@ -87,7 +87,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void recordBtn(View v) {
+    public void recordBtn(View v) { ///realy its SAVE wtf?!
 
         if (GlobalValues.getInstance().getRecordRoute()==true){
             //v.getBackground().clearColorFilter();
@@ -100,22 +100,23 @@ public class MainActivity extends Activity {
     }
 
     public void showRoute(View v) {
+for (int i = 0; i< GlobalValues.getInstance().getRouteList().getRouteNumber(); i++) {
+    Route route = GlobalValues.getInstance().getRouteList().getRoutes().get(i);
+    ArrayList<LatLng> points = route.getPoints();
+    if (points.size() > 0) {
+        final LatLng[] pointsArray = points.toArray(new LatLng[points.size()]);
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(final MapboxMap mapboxMap) {
 
-        Route route = GlobalValues.getInstance().getRouteList().getRoutes().get(0);
-        ArrayList<LatLng> points = route.getPoints();
-        if (points.size() > 0) {
-            final LatLng[]  pointsArray = points.toArray(new LatLng[points.size()]);
-            mapView.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(final MapboxMap mapboxMap) {
-
-                    mapboxMap.addPolyline(new PolylineOptions()
-                            .add(pointsArray)
-                            .color(Color.parseColor("#3bb2d0"))
-                            .width(2));
-                }
-            });
-        }
+                mapboxMap.addPolyline(new PolylineOptions()
+                        .add(pointsArray)
+                        .color(Color.parseColor("#3bb2d0"))
+                        .width(2));
+            }
+        });
+    }
+}
     }
 
     public void saveToFile(View v)
@@ -126,8 +127,15 @@ public class MainActivity extends Activity {
 
     public void loadFromFile(View v)
     {
+        if (GlobalValues.getInstance().getRouteList() == null){
+            Log.d("ladowanie123","1252123123");
+            GlobalValues.getInstance().setRouteList(new RouteList(this));
+        }
+        Log.d("ladowanie","1252123123");
         GlobalValues.getInstance().getRouteList().loadList();
     }
+
+
     // Add the mapView lifecycle to the activity's lifecycle methods
     @Override
     public void onResume() {

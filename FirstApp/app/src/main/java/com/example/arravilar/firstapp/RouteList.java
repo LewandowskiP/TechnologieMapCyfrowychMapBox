@@ -37,6 +37,7 @@ public class RouteList {
         appContext = context;
     }
 
+
     public ArrayList<Route> getRoutes() {
         return routes;
     }
@@ -44,6 +45,7 @@ public class RouteList {
     public void addRoute(String name){
         routes.add(new Route(name));
         routeNumber++;
+        Log.d("Test", "Dodałem ścieżkę: " + name.toString());
     }
 
     public void saveList() {
@@ -53,15 +55,18 @@ public class RouteList {
             main = new JSONObject();
             // type : "FeatureCollection"
             main.put("type", "FeatureCollection");
+
             // features :
             JSONArray features = new JSONArray();
             for (int routeIterator = 0; routeIterator < routeNumber; routeIterator++ ) {
+
                 JSONObject feature = new JSONObject();
                 // type : feature
                 feature.put("type", "Feature");
                 /*"properties": {
                 "name": "name"
                 },*/
+
                 JSONObject properties = new JSONObject();
                 properties.put("name", routes.get(routeIterator).getName());
                 feature.put("properties", properties);
@@ -78,6 +83,7 @@ public class RouteList {
                 // "geometry": ...
                 geometry.put("coordinates",coordinates);
                 feature.put("geometry",geometry);
+                features.put(feature);
             }
             main.put("features",features);
         }
@@ -89,7 +95,8 @@ public class RouteList {
 
         //Save to file
         try{
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(appContext.openFileOutput("Rotues.geojson", Context.MODE_PRIVATE));
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(appContext.openFileOutput("Rotues", Context.MODE_PRIVATE));
+            Log.d("Test", "Zrobilem: " + main.toString());
             outputStreamWriter.write(main.toString());
             outputStreamWriter.close();
         }
@@ -102,14 +109,17 @@ public class RouteList {
 
     public ArrayList<Route> loadList() {
         String revicedString = "";
+        Log.d("Test1", "Zrobilem: " + revicedString.toString());
         try {
             // Load GeoJSON file
-            InputStream inputStream = appContext.openFileInput("Rotues.geojson");
+            InputStream inputStream = appContext.openFileInput("Rotues");
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder stringBuilder = new StringBuilder();
             while ((revicedString = bufferedReader.readLine()) != null) {
                 stringBuilder.append(revicedString);
             }
+            Log.d("Test", "Zrobilem: " + revicedString);
+            revicedString = stringBuilder.toString();
             inputStream.close();
         } catch (Exception e) {
             Log.e(null, "Exception Loading GeoJSON: " + e.toString());

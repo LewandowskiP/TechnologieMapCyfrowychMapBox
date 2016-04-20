@@ -7,7 +7,8 @@ public class GlobalValues {
 
     private static GlobalValues globalValues =null;
     private boolean recordRoute;
-    private RouteList routeList;
+    private static RouteList routeList;
+
     private GlobalValues()
     {
         recordRoute = false;

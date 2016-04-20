@@ -1,6 +1,7 @@
 package com.example.arravilar.firstapp;
 
 import android.location.Location;
+import android.util.Log;
 
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
@@ -21,11 +22,13 @@ public class Route {
     public Route(String Name)
     {
         name = new String(new String(Name));
+        Log.d("Test", "Zrobilem: " + name.toString());
         pointsNum = 0;
     }
     public void addPoint(LatLng loc)
     {
         points.add(new LatLng(loc));
+        Log.d("Test", "Zrobilem: " + loc.toString());
         pointsNum++;
     }
 

@@ -1,10 +1,12 @@
 package com.example.arravilar.firstapp;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLngSpan;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,6 +39,121 @@ public class RouteList {
         appContext = context;
     }
 
+    private class PointDouble{
+        private double A, B;
+
+        public PointDouble(){
+
+        }
+        public PointDouble(double a, double b){
+            A = a;
+            B = b;
+        }
+        public void setA (double a){
+            A = a;
+        }
+        public void setB (double b){
+            B = b;
+        }
+        public double getA(){
+            return A;
+        }
+        public double getB() {
+            return B;
+        }
+    }
+    //wspolczynniki A i B dla lini przechodzacej przez 2 punkty
+    private  PointDouble getLineCoefficients(LatLng P1, LatLng P2){
+        PointDouble punkt = new PointDouble();
+
+        punkt.setA((P1.getLatitude()-P2.getLatitude())/(P1.getLongitude()-P2.getLongitude()));
+        punkt.setB(P2.getLatitude()-P2.getLongitude()*punkt.getA());
+
+        return punkt;
+    }
+
+    //punkt przeciecia dwoch odcinkow
+    private LatLng sectionCrossingPoint(LatLng S1P1, LatLng S1P2, LatLng S2P1, LatLng S2P2){
+        //współczynniki A i B odcinkow
+        double S1A, S1B, S2A, S2B;
+        LatLng crossingPoint = new LatLng();
+        if ((S1P1==S2P1)||(S1P1==S2P2)||(S1P2==S2P1)||(S1P2==S2P2)){ //jesli maja wspólny punkt końcowy lub jesli są współliniowe
+            return null;
+        } else {
+            S1A = getLineCoefficients(S1P1, S1P2).getA();
+            S2A = getLineCoefficients(S2P1, S2P2).getA();
+            if (S1A == S2A) {   //jesli odcinki są równoległe
+                return null;
+            } else {     //jeśli się przecinają
+                Log.d("Debug Gdzie sie inają","ffffff");
+                S1B = getLineCoefficients(S1P1, S1P2).getB();
+                S2B = getLineCoefficients(S2P1, S2P2).getB();
+
+                crossingPoint.setLongitude((S2B-S1B)/(S1A-S2A)); //find Longitude - X
+                crossingPoint.setLatitude(S1A*crossingPoint.getLongitude()+S1B); //find Latitude - Y
+                Log.d("Debug Punkkt 1", S1P1.toString());
+                Log.d("Debug Punkkt 2", S1P2.toString());
+                Log.d("Debug Punkkt 3", S2P1.toString());
+                Log.d("Debug Punkkt 4", S2P2.toString());
+                Log.d("DEBUG punkt CROSS", crossingPoint.toString());
+                //sprawdzenie czy punkt nalezy do odcinka
+                //WAZNE!!! W zależności od położenia punktów na mapie
+                //nierówności muszą być inne DO POPRAWY!
+                if     ((crossingPoint.getLongitude()>=S1P1.getLongitude())&&  //Px >= MinX
+                        (crossingPoint.getLongitude()>=S2P1.getLongitude())&&
+                        (crossingPoint.getLongitude()<=S1P2.getLongitude())&& //Px <= MaxX
+                        (crossingPoint.getLongitude()<=S2P2.getLongitude())&&
+                        (crossingPoint.getLatitude()>=S1P1.getLatitude())&& //Py >= MinY
+                        (crossingPoint.getLatitude()>=S2P1.getLatitude())&&
+                        (crossingPoint.getLatitude()<=S1P2.getLatitude())&& //Py <= MaxY
+                        (crossingPoint.getLatitude()<=S2P2.getLatitude())){
+                    return crossingPoint;
+                }
+                else return null;
+            }
+        }
+    }
+
+    public int RouteMakeCrossing(){
+        int routesCount = getRouteNumber();
+        int pointsAdded = 0;
+
+        //dwie petle bo kazda z kazdym
+        //jedna petla bo sprawdzam jedna nowo dodaną droge z pozostalymi
+        for (int i=0; i<routesCount; i++)
+        //int i = routesCount-1;
+            for (int j=0; j<routesCount; j++) {
+                Log.d("Debug Routes Count", Integer.toString(routesCount));
+                Log.d("Debug i", Integer.toString(i));
+                Log.d("Debug j", Integer.toString(j));
+                //latitude -90 - +90 - Y
+                //longitude -180 - +180 - X
+                //sprawdz zeby nie sprawdzac drogi samej z soba
+                if (i != j) {
+                    //po punktach ze scieżki pierwszej
+                    for (int k = 0; k < routes.get(i).getPointsNum() - 1; k++)
+                        //po punktach ze ścieżki drugiej
+                        for (int l = 0; l < routes.get(j).getPointsNum() - 1; l++) {
+                            //jeśli ścieżki się przecinają
+                            if (sectionCrossingPoint(routes.get(i).getPoint(k), routes.get(i).getPoint(k + 1),
+                                    routes.get(j).getPoint(l), routes.get(j).getPoint(l + 1)) != null) {
+                                LatLng crossPoint;
+
+                                //wstaw obliczony punkt do obydwu sciezek
+                                crossPoint = sectionCrossingPoint(routes.get(i).getPoint(k), routes.get(i).getPoint(k + 1),
+                                        routes.get(j).getPoint(l), routes.get(j).getPoint(l + 1));
+                                Log.d("Debug PUNKT", crossPoint.toString());
+                                routes.get(i).addPointI(k + 1, crossPoint);
+                                routes.get(i).addPointI(k + 1, crossPoint);
+
+                                l++; //przejście do początku kolejnego odcinka
+                                pointsAdded++; //liczba oddanych punktow
+                            }
+                        }
+                }
+            }
+        return pointsAdded; //crossing done
+    }
 
     public ArrayList<Route> getRoutes() {
         return routes;
@@ -47,6 +164,8 @@ public class RouteList {
         routeNumber++;
         Log.d("Test", "Dodałem ścieżkę: " + name.toString());
     }
+
+
 
     public void saveList() {
         //Construct GeoJSON file

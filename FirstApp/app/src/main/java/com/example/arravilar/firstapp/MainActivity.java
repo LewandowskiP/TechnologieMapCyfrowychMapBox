@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
 
 
     public Button btnSaveRoute;
-    public Button btnRec;
+    public Button btnRcrdRoute;
     public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
 
 
@@ -39,8 +39,8 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
+        btnRcrdRoute = (Button) findViewById(R.id.btnRcrdRoute);
         btnSaveRoute = (Button) findViewById(R.id.btnSaveRoute);
-        btnRec = (Button) findViewById(R.id.btnRec);
         GlobalValues.getInstance().setRecordRoute(false);
 
         mapView = (MapView) findViewById(R.id.mapView);
@@ -58,6 +58,7 @@ public class MainActivity extends Activity {
                     public void onMyLocationChange(Location location)
                     {
                         Log.d("112","112");
+                        //jesli wlaczone nagrywanie to dodaj punkt do drogi na przez listener
                      if (GlobalValues.getInstance().getRecordRoute() == true) {
                          Log.d("111","111");
                          GlobalValues.getInstance().getRouteList().getRoutes().get(GlobalValues.getInstance().getRouteList().getRouteNumber()-1).addPoint(new LatLng(mapboxMap.getMyLocation()));
@@ -77,30 +78,32 @@ public class MainActivity extends Activity {
     }
 
 
-    public void routeSaveBtn(View v) { //realy its RECORD
+    public void routeRcrdBtn(View v) {
         if (GlobalValues.getInstance().getRecordRoute()==false) {
-            btnRec.setText("Save recorded points");
-            btnSaveRoute.setVisibility(View.INVISIBLE);
-            btnRec.setVisibility(View.VISIBLE);
+            btnSaveRoute.setText("Save recorded points");
+            btnRcrdRoute.setVisibility(View.INVISIBLE);
+            btnSaveRoute.setVisibility(View.VISIBLE);
             Intent intent = new Intent(this, Main2Activity.class);
             startActivity(intent);
         }
     }
 
-    public void recordBtn(View v) { ///realy its SAVE wtf?!
+    public void routeSaveBtn(View v) {
 
         if (GlobalValues.getInstance().getRecordRoute()==true){
             //v.getBackground().clearColorFilter();
-            btnRec.setText("Record");
+            btnRcrdRoute.setText("Record");
             GlobalValues.getInstance().setRecordRoute(false);
-            btnSaveRoute.setVisibility(View.VISIBLE);
-            btnRec.setVisibility(View.INVISIBLE);
+            btnRcrdRoute.setVisibility(View.VISIBLE);
+            btnSaveRoute.setVisibility(View.INVISIBLE);
+            //sprawdz czy ostatnio dodana przecina się z pozostałymi
+            Log.d("123", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
             Log.d("123",GlobalValues.getInstance().getRouteList().getRoutes().get(GlobalValues.getInstance().getRouteList().getRouteNumber()-1).getPoint(0).toString());
         }
     }
 
     public void showRoute(View v) {
-for (int i = 0; i< GlobalValues.getInstance().getRouteList().getRouteNumber(); i++) {
+        for (int i = 0; i< GlobalValues.getInstance().getRouteList().getRouteNumber(); i++) {
     Route route = GlobalValues.getInstance().getRouteList().getRoutes().get(i);
     ArrayList<LatLng> points = route.getPoints();
     if (points.size() > 0) {
@@ -113,10 +116,12 @@ for (int i = 0; i< GlobalValues.getInstance().getRouteList().getRouteNumber(); i
                         .add(pointsArray)
                         .color(Color.parseColor("#3bb2d0"))
                         .width(2));
+
             }
         });
     }
-}
+    }
+        Log.d("123", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
     }
 
     public void saveToFile(View v)

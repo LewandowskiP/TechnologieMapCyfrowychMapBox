@@ -25,6 +25,14 @@ public class Route {
         Log.d("Test", "Zrobilem: " + name.toString());
         pointsNum = 0;
     }
+
+    public void addPointI(int index, LatLng loc)
+    {
+        points.add(index, new LatLng(loc));
+        Log.d("Test", "Zrobilem: " + loc.toString());
+        pointsNum++;
+    }
+
     public void addPoint(LatLng loc)
     {
         points.add(new LatLng(loc));

@@ -85,7 +85,7 @@ public class RouteList {
             if (S1A == S2A) {   //jesli odcinki są równoległe
                 return null;
             } else {     //jeśli się przecinają
-                Log.d("Debug Gdzie sie inają","ffffff");
+                Log.d("Debug Gdzie sie inają","fffff");
                 S1B = getLineCoefficients(S1P1, S1P2).getB();
                 S2B = getLineCoefficients(S2P1, S2P2).getB();
 

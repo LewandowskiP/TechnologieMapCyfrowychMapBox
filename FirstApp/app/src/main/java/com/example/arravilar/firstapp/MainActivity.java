@@ -15,6 +15,7 @@ import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.layers.CustomLayer;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
@@ -52,7 +53,7 @@ public class MainActivity extends Activity {
                 mapboxMap.setMyLocationEnabled(true);
                 mapboxMap.setMinZoom(5);
                 mapboxMap.setMaxZoom(20);
-                /*
+
                 mapboxMap.setOnMyLocationChangeListener(new MapboxMap.OnMyLocationChangeListener()
                 {
                     @Override
@@ -72,7 +73,7 @@ public class MainActivity extends Activity {
                                 mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     }
 
-                }); */
+                });
             }
 
         });
@@ -113,6 +114,24 @@ public class MainActivity extends Activity {
             @Override
             public void onMapReady(final MapboxMap mapboxMap) {
 
+
+        Route route = GlobalValues.getInstance().getRouteList().getRoutes().get(0);
+        ArrayList<LatLng> points = route.getPoints();
+        if (points.size() > 0) {
+            final LatLng[]  pointsArray = points.toArray(new LatLng[points.size()]);
+            mapView.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(final MapboxMap mapboxMap) {
+
+                    mapboxMap.addPolyline(new PolylineOptions()
+                            .add(pointsArray)
+                            .color(Color.parseColor("#3bb2d0"))
+                            .width(2));
+
+                }
+            });
+        }
+
                 mapboxMap.addPolyline(new PolylineOptions()
                         .add(pointsArray)
                         .color(Color.parseColor("#3bb2d0"))
@@ -123,6 +142,7 @@ public class MainActivity extends Activity {
     }
     }
         Log.d("123", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
+
     }
 
     public void saveToFile(View v)

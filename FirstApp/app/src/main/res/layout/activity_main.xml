@@ -16,9 +16,15 @@
         mapbox:center_latitude="40.73581"
         mapbox:center_longitude="-73.99155"
         mapbox:zoom="11"
+
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+
         android:layout_alignBottom="@+id/btnRcrdRoute"
         android:layout_alignRight="@+id/btnRcrdRoute"
         android:layout_alignEnd="@+id/btnRcrdRoute" />
+
 
     <Button
         android:layout_width="wrap_content"

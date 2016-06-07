@@ -105,8 +105,25 @@ public class MainActivity extends Activity {
      }
 
     public void showRoute(View v) {
+        if (GlobalValues.getInstance().getRouteList() != null)
+            for(Route r:GlobalValues.getInstance().getRouteList().getRoutes())
+            {
+                ArrayList<LatLng> points = r.getPoints();
+                if (points.size() > 0) {
+                    final LatLng[] pointsArray = points.toArray(new LatLng[points.size()]);
+                    mapView.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(final MapboxMap mapboxMap) {
 
-        
+                            mapboxMap.addPolyline(new PolylineOptions()
+                                    .add(pointsArray)
+                                    .color(Color.parseColor("#3bb2d0"))
+                                    .width(2));
+
+                        }
+                    });
+                }
+            }
     }
 
     public void saveToFile(View v)

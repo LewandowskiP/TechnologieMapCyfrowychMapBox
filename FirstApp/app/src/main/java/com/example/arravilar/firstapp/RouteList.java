@@ -76,6 +76,7 @@ public class RouteList {
     private LatLng sectionCrossingPoint(LatLng S1P1, LatLng S1P2, LatLng S2P1, LatLng S2P2){
         //współczynniki A i B odcinkow
         double S1A, S1B, S2A, S2B;
+        LatLng temp = new LatLng();
         LatLng crossingPoint = new LatLng();
         if ((S1P1==S2P1)||(S1P1==S2P2)||(S1P2==S2P1)||(S1P2==S2P2)){ //jesli maja wspólny punkt końcowy lub jesli są współliniowe
             return null;
@@ -91,25 +92,84 @@ public class RouteList {
 
                 crossingPoint.setLongitude((S2B-S1B)/(S1A-S2A)); //find Longitude - X
                 crossingPoint.setLatitude(S1A*crossingPoint.getLongitude()+S1B); //find Latitude - Y
-                Log.d("Debug Punkkt 1", S1P1.toString());
-                Log.d("Debug Punkkt 2", S1P2.toString());
-                Log.d("Debug Punkkt 3", S2P1.toString());
-                Log.d("Debug Punkkt 4", S2P2.toString());
+               // Log.d("Debug Punkkt 1", S1P1.toString());
+               // Log.d("Debug Punkkt 2", S1P2.toString());
+                // Log.d("Debug Punkkt 3", S2P1.toString());
+               // Log.d("Debug Punkkt 4", S2P2.toString());
                 Log.d("DEBUG punkt CROSS", crossingPoint.toString());
+
+
+                if (S1P1.getLongitude()>S1P2.getLongitude()){
+                    temp = S1P2;
+                    S1P2 = S1P1;
+                    S1P1 = temp;
+                }
+
+                if (S2P1.getLongitude()>S2P2.getLongitude()){
+                    temp = S2P2;
+                    S2P2 = S2P1;
+                    S2P1 = temp;
+
+                }
+
                 //sprawdzenie czy punkt nalezy do odcinka
                 //WAZNE!!! W zależności od położenia punktów na mapie
                 //nierówności muszą być inne DO POPRAWY!
-                if     ((crossingPoint.getLongitude()>=S1P1.getLongitude())&&  //Px >= MinX
-                        (crossingPoint.getLongitude()>=S2P1.getLongitude())&&
-                        (crossingPoint.getLongitude()<=S1P2.getLongitude())&& //Px <= MaxX
-                        (crossingPoint.getLongitude()<=S2P2.getLongitude())&&
-                        (crossingPoint.getLatitude()>=S1P1.getLatitude())&& //Py >= MinY
-                        (crossingPoint.getLatitude()>=S2P1.getLatitude())&&
-                        (crossingPoint.getLatitude()<=S1P2.getLatitude())&& //Py <= MaxY
-                        (crossingPoint.getLatitude()<=S2P2.getLatitude())){
-                    return crossingPoint;
-                }
-                else return null;
+                if ((S1A>0)&&(S2A>0)){  //S1 i S2 rosnące
+                    if  ((crossingPoint.getLongitude()>=S1P1.getLongitude())&&  //Px >= MinX
+                         (crossingPoint.getLongitude()>=S2P1.getLongitude())&&
+                         (crossingPoint.getLongitude()<=S1P2.getLongitude())&& //Px <= MaxX
+                         (crossingPoint.getLongitude()<=S2P2.getLongitude())&&
+                         (crossingPoint.getLatitude()>=S1P1.getLatitude())&& //Py >= MinY
+                         (crossingPoint.getLatitude()<=S1P2.getLatitude())&&
+                         (crossingPoint.getLatitude()>=S2P1.getLatitude())&& //Py <= MaxY
+                         (crossingPoint.getLatitude()<=S2P2.getLatitude())){
+                        //Log.d("123456", "++");
+                        return crossingPoint;
+                    } else return null;
+                } else
+                    if ((S1A>0)&&(S2A<0)){  //S1 rosnaca, S2 malejaca
+                        if  ((crossingPoint.getLongitude()>=S1P1.getLongitude())&&  //Px >= MinX
+                            (crossingPoint.getLongitude()>=S2P1.getLongitude())&&
+                            (crossingPoint.getLongitude()<=S1P2.getLongitude())&& //Px <= MaxX
+                            (crossingPoint.getLongitude()<=S2P2.getLongitude())&&
+                            (crossingPoint.getLatitude()>=S1P1.getLatitude())&& //Py >= MinY
+                            (crossingPoint.getLatitude()<=S1P2.getLatitude())&&
+                            (crossingPoint.getLatitude()<=S2P1.getLatitude())&& //Py <= MaxY
+                            (crossingPoint.getLatitude()>=S2P2.getLatitude())) {
+                            //Log.d("123456", "+-");
+                            return crossingPoint;
+                        } else return null;
+                    } else
+                        if ((S1A<0)&&(S2A>0)){
+                            if  ((crossingPoint.getLongitude()>=S1P1.getLongitude())&&  //Px >= MinX
+                                 (crossingPoint.getLongitude()>=S2P1.getLongitude())&&
+                                 (crossingPoint.getLongitude()<=S1P2.getLongitude())&& //Px <= MaxX
+                                 (crossingPoint.getLongitude()<=S2P2.getLongitude())&&
+                                 (crossingPoint.getLatitude()<=S1P1.getLatitude())&& //Py >= MinY
+                                 (crossingPoint.getLatitude()>=S1P2.getLatitude())&&
+                                 (crossingPoint.getLatitude()>=S2P1.getLatitude())&& //Py <= MaxY
+                                 (crossingPoint.getLatitude()<=S2P2.getLatitude())) {
+                                //Log.d("123456", "-+");
+                                return crossingPoint;
+
+                            } else return null;
+                        } else
+                            if ((S1A<0)&&(S2A<0)){
+                                if  ((crossingPoint.getLongitude()>=S1P1.getLongitude())&&  //Px >= MinX
+                                     (crossingPoint.getLongitude()>=S2P1.getLongitude())&&
+                                     (crossingPoint.getLongitude()<=S1P2.getLongitude())&& //Px <= MaxX
+                                     (crossingPoint.getLongitude()<=S2P2.getLongitude())&&
+                                     (crossingPoint.getLatitude()<=S1P1.getLatitude())&& //Py >= MinY
+                                     (crossingPoint.getLatitude()>=S1P2.getLatitude())&&
+                                     (crossingPoint.getLatitude()<=S2P1.getLatitude())&& //Py <= MaxY
+                                     (crossingPoint.getLatitude()>=S2P2.getLatitude())) {
+                                    //Log.d("123456", "--");
+                                    return crossingPoint;
+                                } else return null;
+                            }
+
+             return null;
             }
         }
     }

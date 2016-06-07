@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
                 mapboxMap.setMyLocationEnabled(true);
                 mapboxMap.setMinZoom(5);
                 mapboxMap.setMaxZoom(20);
+                /*
                 mapboxMap.setOnMyLocationChangeListener(new MapboxMap.OnMyLocationChangeListener()
                 {
                     @Override
@@ -71,7 +72,7 @@ public class MainActivity extends Activity {
                                 mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     }
 
-                });
+                }); */
             }
 
         });

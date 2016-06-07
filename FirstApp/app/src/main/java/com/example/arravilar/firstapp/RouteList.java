@@ -203,8 +203,9 @@ public class RouteList {
                                 crossPoint = sectionCrossingPoint(routes.get(i).getPoint(k), routes.get(i).getPoint(k + 1),
                                         routes.get(j).getPoint(l), routes.get(j).getPoint(l + 1));
                                 Log.d("Debug PUNKT", crossPoint.toString());
+
                                 routes.get(i).addPointI(k + 1, crossPoint);
-                                routes.get(i).addPointI(k + 1, crossPoint);
+                                routes.get(j).addPointI(l + 1, crossPoint);
 
                                 l++; //przejście do początku kolejnego odcinka
                                 pointsAdded++; //liczba oddanych punktow

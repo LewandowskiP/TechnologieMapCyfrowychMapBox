@@ -93,42 +93,37 @@ public class MainActivity extends Activity {
     public void routeSaveBtn(View v) {
 
         if (GlobalValues.getInstance().getRecordRoute()==true){
-            //v.getBackground().clearColorFilter();
             btnRcrdRoute.setText("Record");
             GlobalValues.getInstance().setRecordRoute(false);
             btnRcrdRoute.setVisibility(View.VISIBLE);
             btnSaveRoute.setVisibility(View.INVISIBLE);
             //sprawdz czy ostatnio dodana przecina się z pozostałymi
-            Log.d("123", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
+            //Log.d("123", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
             Log.d("123",GlobalValues.getInstance().getRouteList().getRoutes().get(GlobalValues.getInstance().getRouteList().getRouteNumber()-1).getPoint(0).toString());
         }
      }
 
     public void showRoute(View v) {
         for (int i = 0; i< GlobalValues.getInstance().getRouteList().getRouteNumber(); i++) {
-    Route route = GlobalValues.getInstance().getRouteList().getRoutes().get(i);
-    ArrayList<LatLng> points = route.getPoints();
-    if (points.size() > 0) {
-        final LatLng[] pointsArray = points.toArray(new LatLng[points.size()]);
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(final MapboxMap mapboxMap) {
-
-
-        Route route = GlobalValues.getInstance().getRouteList().getRoutes().get(0);
-        ArrayList<LatLng> points = route.getPoints();
-        if (points.size() > 0) {
-            final LatLng[]  pointsArray = points.toArray(new LatLng[points.size()]);
-            mapView.getMapAsync(new OnMapReadyCallback() {
+            Route route = GlobalValues.getInstance().getRouteList().getRoutes().get(i);
+            ArrayList<LatLng> points = route.getPoints();
+            if (points.size() > 0) {
+                final LatLng[] pointsArray = points.toArray(new LatLng[points.size()]);
+                mapView.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(final MapboxMap mapboxMap) {
-
-                    mapboxMap.addPolyline(new PolylineOptions()
+                    Route route = GlobalValues.getInstance().getRouteList().getRoutes().get(0);
+                    ArrayList<LatLng> points = route.getPoints();
+                    if (points.size() > 0) {
+                        final LatLng[]  pointsArray = points.toArray(new LatLng[points.size()]);
+                        mapView.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(final MapboxMap mapboxMap) {
+                            mapboxMap.addPolyline(new PolylineOptions()
                             .add(pointsArray)
                             .color(Color.parseColor("#3bb2d0"))
                             .width(2));
-
-                }
+                        }
             });
         }
 

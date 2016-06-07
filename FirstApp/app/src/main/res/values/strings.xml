@@ -1,4 +1,78 @@
 <resources>
     <string name="app_name">FirstApp</string>
     <string name="accessToken">pk.eyJ1IjoibGVzdGVyb3giLCJhIjoiY2lteGdxcnlqMDBkYnc4bTJ1c3Q3ODR3bCJ9.iBJ9nnrjBovi-8idsSytEQ</string>
+    <string name="geojsonFile">{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "jeden"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            18.617464900016785,
+            54.3741990663684
+          ],
+          [
+            18.613409399986267,
+            54.37505210465086
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "dwa"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            18.615399599075317,
+            54.37389909265055
+          ],
+          [
+            18.616177439689636,
+            54.37508022649026
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "trzy"},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            18.616880178451538,
+            54.37384909681782
+          ],
+          [
+            18.616735339164734,
+            54.37452403542294
+          ],
+          [
+            18.61529231071472,
+            54.37435530181179
+          ],
+          [
+            18.614884614944458,
+            54.37501773348763
+          ],
+          [
+            18.613752722740173,
+            54.37475838651025
+          ]
+        ]
+      }
+    }
+  ]
+}</string>
+
 </resources>

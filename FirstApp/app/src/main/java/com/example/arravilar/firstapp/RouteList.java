@@ -66,10 +66,10 @@ public class RouteList {
     private  PointDouble getLineCoefficients(LatLng P1, LatLng P2){
         PointDouble punkt = new PointDouble();
 
-        //Log.d("DEBUG //// KOORD P1Lat", Double.toString(P1.getLatitude()));
-        //Log.d("DEBUG //// KOORD P1Lng", Double.toString(P1.getLongitude()));
-        //Log.d("DEBUG //// KOORD P2Lat", Double.toString(P2.getLatitude()));
-        //Log.d("DEBUG //// KOORD P2Lng", Double.toString(P2.getLongitude()));
+        Log.d("DEBUG //// KOORD P1Lat", Double.toString(P1.getLatitude()));
+        Log.d("DEBUG //// KOORD P1Lng", Double.toString(P1.getLongitude()));
+        Log.d("DEBUG //// KOORD P2Lat", Double.toString(P2.getLatitude()));
+        Log.d("DEBUG //// KOORD P2Lng", Double.toString(P2.getLongitude()));
 
         punkt.setA((P1.getLatitude()-P2.getLatitude())/(P1.getLongitude()-P2.getLongitude()));
         punkt.setB(P2.getLatitude()-P2.getLongitude()*punkt.getA());
@@ -78,6 +78,7 @@ public class RouteList {
 
 
     private int checkIfCommon(LatLng S1P1, LatLng S1P2, LatLng S2P1, LatLng S2P2){
+
         if ((S1P1.getLatitude() == S1P2.getLatitude())&&(S1P1.getLongitude()== S1P2.getLongitude())) return 0;
         else if ((S2P1.getLatitude() == S2P2.getLatitude())&&(S2P1.getLongitude()== S2P2.getLongitude())) return 0;
             else if ((S1P1.getLatitude() == S2P1.getLatitude())&&(S1P1.getLongitude()== S2P1.getLongitude())) return 0;
@@ -87,16 +88,48 @@ public class RouteList {
                             else return 1;
     }
 
+    private int  ifLiesOnSection(LatLng xPoint, LatLng P1, LatLng P2, double aFactor){
+        if ((aFactor>0)&&(P1.getLongitude()<P2.getLongitude())){
+            if ((P1.getLongitude()<=xPoint.getLongitude())&&(xPoint.getLongitude()<=P2.getLongitude())
+                &&(P1.getLatitude()<=xPoint.getLatitude())&&(xPoint.getLatitude()<=P2.getLatitude())) {
+                Log.d("LEZZYYY:", "A>0 x1<x2");
+                return 1;
+            }
+
+        }else if ((aFactor>0)&&(P2.getLongitude()<P1.getLongitude())){
+            if ((P2.getLongitude()<=xPoint.getLongitude())&&(xPoint.getLongitude()<=P1.getLongitude())
+                    &&(P2.getLatitude()<=xPoint.getLatitude())&&(xPoint.getLatitude()<=P1.getLatitude())){
+                Log.d("LEZZYYY:", "A>0 x2<x1");
+                return 1;
+            }
+
+        }else if ((aFactor<=0)&&(P1.getLongitude()<P2.getLongitude())){
+            if ((P1.getLongitude()<=xPoint.getLongitude())&&(xPoint.getLongitude()<=P2.getLongitude())
+                    &&(P2.getLatitude()<=xPoint.getLatitude())&&(xPoint.getLatitude()<=P1.getLatitude())){
+                Log.d("LEZZYYY:", "A<=0 x1<x2");
+                return 1;
+            }
+
+        }else if ((aFactor<=0)&&(P2.getLongitude()<P1.getLongitude())){
+            if ((P2.getLongitude()<=xPoint.getLongitude())&&(xPoint.getLongitude()<=P1.getLongitude())
+                    &&(P1.getLatitude()<=xPoint.getLatitude())&&(xPoint.getLatitude()<=P2.getLatitude())){
+                Log.d("LEZZYYY:", "A<=0 x2<x1");
+                return 1;
+            }
+        }
+        return 0;
+    }
 
     //punkt przeciecia dwoch odcinkow
-    private LatLng sectionCrossingPoint(LatLng S1P1, LatLng S1P2, LatLng S2P1, LatLng S2P2){
+    private LatLng sectionCrossingPoint(LatLng S1P1, LatLng S1P2, LatLng S2P1, LatLng S2P2) {
         //współczynniki A i B odcinkow
         double S1A, S1B, S2A, S2B;
         LatLng temp = new LatLng();
         LatLng crossingPoint = new LatLng();
 
-        if (checkIfCommon(S1P1, S1P2, S2P1,S2P2)==0){
-            Log.d("GOOOOOOWNO","KAAAU");
+        ///sprawdz czy punkty wspolne itd.
+        if (checkIfCommon(S1P1, S1P2, S2P1, S2P2) == 0) {
+            Log.d("GOOOOOOWNO", "KAAAU");
             return null;
 
         } else {
@@ -106,100 +139,34 @@ public class RouteList {
             if (S1A == S2A) {   //jesli odcinki są równoległe
                 return null;
             } else {     //jeśli się przecinają
-                Log.d("Debug Gdzie sie inają","fffff");
+                Log.d("Debug Gdzie sie inają", "fffff");
                 S1B = getLineCoefficients(S1P1, S1P2).getB();
                 S2B = getLineCoefficients(S2P1, S2P2).getB();
                 Log.d("DEBUG LICZBY///: S1A", Double.toString(S1A));
-                Log.d("DEBUG LICZBY///: S1B", Double.toString(S1B));
-                Log.d("DEBUG LICZBY///: S2A", Double.toString(S2A));
-                Log.d("DEBUG LICZBY///: S2B", Double.toString(S2B));
+                //Log.d("DEBUG LICZBY///: S1B", Double.toString(S1B));
+               Log.d("DEBUG LICZBY///: S2A", Double.toString(S2A));
+                //Log.d("DEBUG LICZBY///: S2B", Double.toString(S2B));
 
-                crossingPoint.setLongitude((S2B-S1B)/(S1A-S2A)); //find Longitude - X
-                crossingPoint.setLatitude(S1A*crossingPoint.getLongitude()+S1B); //find Latitude - Y
+                crossingPoint.setLongitude((S2B - S1B) / (S1A - S2A)); //find Longitude - X
+                crossingPoint.setLatitude(S1A * crossingPoint.getLongitude() + S1B); //find Latitude - Y
 
                 ///check if NaN
-                if(Double.isNaN(crossingPoint.getLongitude())||(Double.isNaN(crossingPoint.getLatitude()))){
+                if (Double.isNaN(crossingPoint.getLongitude()) || (Double.isNaN(crossingPoint.getLatitude()))) {
                     return null;
                 }
 
-               // Log.d("Debug Punkkt 1", S1P1.toString());
-               // Log.d("Debug Punkkt 2", S1P2.toString());
+                // Log.d("Debug Punkkt 1", S1P1.toString());
+                // Log.d("Debug Punkkt 2", S1P2.toString());
                 // Log.d("Debug Punkkt 3", S2P1.toString());
-               // Log.d("Debug Punkkt 4", S2P2.toString());
+                // Log.d("Debug Punkkt 4", S2P2.toString());
                 Log.d("DEBUG punkt CROSS", crossingPoint.toString());
 
+                //check if point is a part of two sections
 
-                if (S1P1.getLongitude()>S1P2.getLongitude()){
-                    temp = S1P2;
-                    S1P2 = S1P1;
-                    S1P1 = temp;
+                if ((ifLiesOnSection(crossingPoint,S1P1,S1P2,S1A)==1)&&(ifLiesOnSection(crossingPoint,S2P1,S2P2,S2A)==1)){
+                    return crossingPoint;
                 }
-
-                if (S2P1.getLongitude()>S2P2.getLongitude()){
-                    temp = S2P2;
-                    S2P2 = S2P1;
-                    S2P1 = temp;
-
-                }
-
-                //sprawdzenie czy punkt nalezy do odcinka
-                //WAZNE!!! W zależności od położenia punktów na mapie
-                //nierówności muszą być inne DO POPRAWY!
-                if ((S1A>0)&&(S2A>0)){  //S1 i S2 rosnące
-                    if  ((crossingPoint.getLongitude()>=S1P1.getLongitude())&&  //Px >= MinX
-                         (crossingPoint.getLongitude()>=S2P1.getLongitude())&&
-                         (crossingPoint.getLongitude()<=S1P2.getLongitude())&& //Px <= MaxX
-                         (crossingPoint.getLongitude()<=S2P2.getLongitude())&&
-                         (crossingPoint.getLatitude()>=S1P1.getLatitude())&& //Py >= MinY
-                         (crossingPoint.getLatitude()<=S1P2.getLatitude())&&
-                         (crossingPoint.getLatitude()>=S2P1.getLatitude())&& //Py <= MaxY
-                         (crossingPoint.getLatitude()<=S2P2.getLatitude())){
-                        //Log.d("123456", "++");
-                        return crossingPoint;
-                    } else return null;
-                } else
-                    if ((S1A>0)&&(S2A<0)){  //S1 rosnaca, S2 malejaca
-                        if  ((crossingPoint.getLongitude()>=S1P1.getLongitude())&&  //Px >= MinX
-                            (crossingPoint.getLongitude()>=S2P1.getLongitude())&&
-                            (crossingPoint.getLongitude()<=S1P2.getLongitude())&& //Px <= MaxX
-                            (crossingPoint.getLongitude()<=S2P2.getLongitude())&&
-                            (crossingPoint.getLatitude()>=S1P1.getLatitude())&& //Py >= MinY
-                            (crossingPoint.getLatitude()<=S1P2.getLatitude())&&
-                            (crossingPoint.getLatitude()<=S2P1.getLatitude())&& //Py <= MaxY
-                            (crossingPoint.getLatitude()>=S2P2.getLatitude())) {
-                            //Log.d("123456", "+-");
-                            return crossingPoint;
-                        } else return null;
-                    } else
-                        if ((S1A<0)&&(S2A>0)){
-                            if  ((crossingPoint.getLongitude()>=S1P1.getLongitude())&&  //Px >= MinX
-                                 (crossingPoint.getLongitude()>=S2P1.getLongitude())&&
-                                 (crossingPoint.getLongitude()<=S1P2.getLongitude())&& //Px <= MaxX
-                                 (crossingPoint.getLongitude()<=S2P2.getLongitude())&&
-                                 (crossingPoint.getLatitude()<=S1P1.getLatitude())&& //Py >= MinY
-                                 (crossingPoint.getLatitude()>=S1P2.getLatitude())&&
-                                 (crossingPoint.getLatitude()>=S2P1.getLatitude())&& //Py <= MaxY
-                                 (crossingPoint.getLatitude()<=S2P2.getLatitude())) {
-                                //Log.d("123456", "-+");
-                                return crossingPoint;
-
-                            } else return null;
-                        } else
-                            if ((S1A<0)&&(S2A<0)){
-                                if  ((crossingPoint.getLongitude()>=S1P1.getLongitude())&&  //Px >= MinX
-                                     (crossingPoint.getLongitude()>=S2P1.getLongitude())&&
-                                     (crossingPoint.getLongitude()<=S1P2.getLongitude())&& //Px <= MaxX
-                                     (crossingPoint.getLongitude()<=S2P2.getLongitude())&&
-                                     (crossingPoint.getLatitude()<=S1P1.getLatitude())&& //Py >= MinY
-                                     (crossingPoint.getLatitude()>=S1P2.getLatitude())&&
-                                     (crossingPoint.getLatitude()<=S2P1.getLatitude())&& //Py <= MaxY
-                                     (crossingPoint.getLatitude()>=S2P2.getLatitude())) {
-                                    //Log.d("123456", "--");
-                                    return crossingPoint;
-                                } else return null;
-                            }
-
-             return null;
+                else return null;
             }
         }
     }
@@ -221,9 +188,9 @@ public class RouteList {
                 //sprawdz zeby nie sprawdzac drogi samej z soba
                 if (i != j) {
                     //po punktach ze scieżki pierwszej
-                    for (int k = 0; k < routes.get(i).getPointsNum() - 2; k++)
+                    for (int k = 0; k < routes.get(i).getPointsNum() - 1; k++)
                         //po punktach ze ścieżki drugiej
-                        for (int l = 0; l < routes.get(j).getPointsNum() - 2; l++) {
+                        for (int l = 0; l < routes.get(j).getPointsNum() - 1; l++) {
                             //jeśli ścieżki się przecinają
                             if (sectionCrossingPoint(routes.get(i).getPoint(k), routes.get(i).getPoint(k + 1), routes.get(j).getPoint(l), routes.get(j).getPoint(l + 1)) != null) {
                                 LatLng crossPoint;
@@ -320,6 +287,7 @@ public class RouteList {
         Log.d("Test1", "Zrobilem: " + revicedString.toString());
         try {
             // Load GeoJSON file
+            /*
             InputStream inputStream = appContext.openFileInput("Rotues");
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder stringBuilder = new StringBuilder();
@@ -327,11 +295,14 @@ public class RouteList {
                 stringBuilder.append(revicedString);
             }
             Log.d("Test", "Zrobilem: " + revicedString);
-            revicedString = stringBuilder.toString();
-            inputStream.close();
+            */
+
+            //inputStream.close();
         } catch (Exception e) {
             Log.e(null, "Exception Loading GeoJSON: " + e.toString());
         }
+        revicedString = appContext.getResources().getString(R.string.geojsonFile);
+        Log.d("ddddddd",revicedString);
             try {
                 // Parse GeoJSON
                 JSONObject main = new JSONObject(revicedString.toString());

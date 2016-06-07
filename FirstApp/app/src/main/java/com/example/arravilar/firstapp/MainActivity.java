@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -104,40 +105,8 @@ public class MainActivity extends Activity {
      }
 
     public void showRoute(View v) {
-        for (int i = 0; i< GlobalValues.getInstance().getRouteList().getRouteNumber(); i++) {
-            Route route = GlobalValues.getInstance().getRouteList().getRoutes().get(i);
-            ArrayList<LatLng> points = route.getPoints();
-            if (points.size() > 0) {
-                final LatLng[] pointsArray = points.toArray(new LatLng[points.size()]);
-                mapView.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(final MapboxMap mapboxMap) {
-                    Route route = GlobalValues.getInstance().getRouteList().getRoutes().get(0);
-                    ArrayList<LatLng> points = route.getPoints();
-                    if (points.size() > 0) {
-                        final LatLng[]  pointsArray = points.toArray(new LatLng[points.size()]);
-                        mapView.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(final MapboxMap mapboxMap) {
-                            mapboxMap.addPolyline(new PolylineOptions()
-                            .add(pointsArray)
-                            .color(Color.parseColor("#3bb2d0"))
-                            .width(2));
-                        }
-            });
-        }
 
-                mapboxMap.addPolyline(new PolylineOptions()
-                        .add(pointsArray)
-                        .color(Color.parseColor("#3bb2d0"))
-                        .width(2));
-
-            }
-        });
-    }
-    }
-        Log.d("123", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
-
+        
     }
 
     public void saveToFile(View v)

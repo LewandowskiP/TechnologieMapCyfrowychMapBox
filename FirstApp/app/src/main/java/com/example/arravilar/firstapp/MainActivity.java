@@ -38,7 +38,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
             context = this.context;
-
         setContentView(R.layout.activity_main);
 
         btnRcrdRoute = (Button) findViewById(R.id.btnRcrdRoute);

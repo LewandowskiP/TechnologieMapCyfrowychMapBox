@@ -44,7 +44,7 @@ public class MyColor {
     public String getColor()
     {
         String toReturn = colors.get(iterator++);
-        iterator = mod(iterator,colors.size());
+        iterator = MyMath.getInstance().mod(iterator,colors.size());
         return toReturn;
     }
 }

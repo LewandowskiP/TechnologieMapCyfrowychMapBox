@@ -39,7 +39,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
             context = this.context;
-
         setContentView(R.layout.activity_main);
 
         btnRcrdRoute = (Button) findViewById(R.id.btnRcrdRoute);
@@ -107,6 +106,7 @@ public class MainActivity extends Activity {
 
 
     public void showRoute(View v) {
+
         if (GlobalValues.getInstance().getRouteList() != null)
             for(Route r:GlobalValues.getInstance().getRouteList().getRoutes())
             {
@@ -130,6 +130,7 @@ public class MainActivity extends Activity {
 
         Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
     }
+
 
     public void saveToFile(View v)
     {

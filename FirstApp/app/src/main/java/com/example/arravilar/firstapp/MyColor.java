@@ -24,8 +24,6 @@ public class MyColor {
         colors.add("#6daa90");
         colors.add("#00faa0");
         colors.add("#00ad00");
-
-
     }
     private int mod(int x, int y)
     {

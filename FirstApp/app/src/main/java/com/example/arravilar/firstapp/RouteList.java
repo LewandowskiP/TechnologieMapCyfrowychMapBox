@@ -66,11 +66,27 @@ public class RouteList {
     private  PointDouble getLineCoefficients(LatLng P1, LatLng P2){
         PointDouble punkt = new PointDouble();
 
+        //Log.d("DEBUG //// KOORD P1Lat", Double.toString(P1.getLatitude()));
+        //Log.d("DEBUG //// KOORD P1Lng", Double.toString(P1.getLongitude()));
+        //Log.d("DEBUG //// KOORD P2Lat", Double.toString(P2.getLatitude()));
+        //Log.d("DEBUG //// KOORD P2Lng", Double.toString(P2.getLongitude()));
+
         punkt.setA((P1.getLatitude()-P2.getLatitude())/(P1.getLongitude()-P2.getLongitude()));
         punkt.setB(P2.getLatitude()-P2.getLongitude()*punkt.getA());
-
         return punkt;
     }
+
+
+    private int checkIfCommon(LatLng S1P1, LatLng S1P2, LatLng S2P1, LatLng S2P2){
+        if ((S1P1.getLatitude() == S1P2.getLatitude())&&(S1P1.getLongitude()== S1P2.getLongitude())) return 0;
+        else if ((S2P1.getLatitude() == S2P2.getLatitude())&&(S2P1.getLongitude()== S2P2.getLongitude())) return 0;
+            else if ((S1P1.getLatitude() == S2P1.getLatitude())&&(S1P1.getLongitude()== S2P1.getLongitude())) return 0;
+                else if ((S1P1.getLatitude() == S2P2.getLatitude())&&(S1P1.getLongitude()== S2P2.getLongitude())) return 0;
+                    else if((S1P2.getLatitude() == S2P1.getLatitude())&&(S1P2.getLongitude()== S2P1.getLongitude())) return 0;
+                        else if((S1P2.getLatitude() == S2P2.getLatitude())&&(S1P2.getLongitude()== S2P2.getLongitude())) return 0;
+                            else return 1;
+    }
+
 
     //punkt przeciecia dwoch odcinkow
     private LatLng sectionCrossingPoint(LatLng S1P1, LatLng S1P2, LatLng S2P1, LatLng S2P2){
@@ -78,20 +94,34 @@ public class RouteList {
         double S1A, S1B, S2A, S2B;
         LatLng temp = new LatLng();
         LatLng crossingPoint = new LatLng();
-        if ((S1P1==S2P1)||(S1P1==S2P2)||(S1P2==S2P1)||(S1P2==S2P2)){ //jesli maja wspólny punkt końcowy lub jesli są współliniowe
+
+        if (checkIfCommon(S1P1, S1P2, S2P1,S2P2)==0){
+            Log.d("GOOOOOOWNO","KAAAU");
             return null;
+
         } else {
             S1A = getLineCoefficients(S1P1, S1P2).getA();
             S2A = getLineCoefficients(S2P1, S2P2).getA();
+
             if (S1A == S2A) {   //jesli odcinki są równoległe
                 return null;
             } else {     //jeśli się przecinają
                 Log.d("Debug Gdzie sie inają","fffff");
                 S1B = getLineCoefficients(S1P1, S1P2).getB();
                 S2B = getLineCoefficients(S2P1, S2P2).getB();
+                Log.d("DEBUG LICZBY///: S1A", Double.toString(S1A));
+                Log.d("DEBUG LICZBY///: S1B", Double.toString(S1B));
+                Log.d("DEBUG LICZBY///: S2A", Double.toString(S2A));
+                Log.d("DEBUG LICZBY///: S2B", Double.toString(S2B));
 
                 crossingPoint.setLongitude((S2B-S1B)/(S1A-S2A)); //find Longitude - X
                 crossingPoint.setLatitude(S1A*crossingPoint.getLongitude()+S1B); //find Latitude - Y
+
+                ///check if NaN
+                if(Double.isNaN(crossingPoint.getLongitude())||(Double.isNaN(crossingPoint.getLatitude()))){
+                    return null;
+                }
+
                // Log.d("Debug Punkkt 1", S1P1.toString());
                // Log.d("Debug Punkkt 2", S1P2.toString());
                 // Log.d("Debug Punkkt 3", S2P1.toString());
@@ -191,21 +221,19 @@ public class RouteList {
                 //sprawdz zeby nie sprawdzac drogi samej z soba
                 if (i != j) {
                     //po punktach ze scieżki pierwszej
-                    for (int k = 0; k < routes.get(i).getPointsNum() - 1; k++)
+                    for (int k = 0; k < routes.get(i).getPointsNum() - 2; k++)
                         //po punktach ze ścieżki drugiej
-                        for (int l = 0; l < routes.get(j).getPointsNum() - 1; l++) {
+                        for (int l = 0; l < routes.get(j).getPointsNum() - 2; l++) {
                             //jeśli ścieżki się przecinają
-                            if (sectionCrossingPoint(routes.get(i).getPoint(k), routes.get(i).getPoint(k + 1),
-                                    routes.get(j).getPoint(l), routes.get(j).getPoint(l + 1)) != null) {
+                            if (sectionCrossingPoint(routes.get(i).getPoint(k), routes.get(i).getPoint(k + 1), routes.get(j).getPoint(l), routes.get(j).getPoint(l + 1)) != null) {
                                 LatLng crossPoint;
 
                                 //wstaw obliczony punkt do obydwu sciezek
-                                crossPoint = sectionCrossingPoint(routes.get(i).getPoint(k), routes.get(i).getPoint(k + 1),
-                                        routes.get(j).getPoint(l), routes.get(j).getPoint(l + 1));
+                                crossPoint = sectionCrossingPoint(routes.get(i).getPoint(k), routes.get(i).getPoint(k + 1), routes.get(j).getPoint(l), routes.get(j).getPoint(l + 1));
                                 Log.d("Debug PUNKT", crossPoint.toString());
 
-                                routes.get(i).addPointI(k + 1, crossPoint);
-                                routes.get(j).addPointI(l + 1, crossPoint);
+                                routes.get(i).addPointI(k+1, crossPoint);
+                                routes.get(j).addPointI(l+1, crossPoint);
 
                                 l++; //przejście do początku kolejnego odcinka
                                 pointsAdded++; //liczba oddanych punktow

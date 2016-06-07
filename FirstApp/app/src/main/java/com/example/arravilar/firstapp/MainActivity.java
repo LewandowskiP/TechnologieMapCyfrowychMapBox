@@ -21,6 +21,7 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends Activity {
 
@@ -99,10 +100,11 @@ public class MainActivity extends Activity {
             btnRcrdRoute.setVisibility(View.VISIBLE);
             btnSaveRoute.setVisibility(View.INVISIBLE);
             //sprawdz czy ostatnio dodana przecina się z pozostałymi
-            //Log.d("123", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
             Log.d("123",GlobalValues.getInstance().getRouteList().getRoutes().get(GlobalValues.getInstance().getRouteList().getRouteNumber()-1).getPoint(0).toString());
+            //Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
         }
      }
+
 
     public void showRoute(View v) {
         if (GlobalValues.getInstance().getRouteList() != null)
@@ -117,13 +119,16 @@ public class MainActivity extends Activity {
 
                             mapboxMap.addPolyline(new PolylineOptions()
                                     .add(pointsArray)
-                                    .color(Color.parseColor("#3bb2d0"))
+                                    //.color(Color.parseColor("#3bb2d0"))
+                                    .color(Color.parseColor("#45df67"))
                                     .width(2));
 
                         }
                     });
                 }
             }
+
+        Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
     }
 
     public void saveToFile(View v)

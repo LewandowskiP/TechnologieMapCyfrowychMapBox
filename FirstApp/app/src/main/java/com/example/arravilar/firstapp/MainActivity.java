@@ -107,9 +107,7 @@ public class MainActivity extends Activity {
 
     public void showRoute(View v) {
 
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(final MapboxMap mapboxMap) {
+
 if (GlobalValues.getInstance().getRouteList() != null)
                 for(Route r:GlobalValues.getInstance().getRouteList().getRoutes())
                 {
@@ -131,8 +129,7 @@ if (GlobalValues.getInstance().getRouteList() != null)
                     }
                 }
             }
-        });
-    }
+
 
     public void saveToFile(View v)
     {

@@ -332,6 +332,7 @@ public class RouteList {
         } catch (Exception e) {
             Log.e(null, "Exception Loading GeoJSON: " + e.toString());
         }
+
             try {
                 // Parse GeoJSON
                 JSONObject main = new JSONObject(revicedString.toString());

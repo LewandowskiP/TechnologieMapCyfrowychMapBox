@@ -16,32 +16,39 @@
         mapbox:center_latitude="40.73581"
         mapbox:center_longitude="-73.99155"
         mapbox:zoom="11"
+<<<<<<< HEAD
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+=======
+        android:layout_alignBottom="@+id/btnRcrdRoute"
+        android:layout_alignRight="@+id/btnRcrdRoute"
+        android:layout_alignEnd="@+id/btnRcrdRoute" />
+>>>>>>> 033c920e462fb86cfdc4fa4078764eb22e94fafb
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Record"
-        android:id="@+id/btnSaveRoute"
-        android:onClick="routeSaveBtn"
+        android:id="@+id/btnRcrdRoute"
+        android:onClick="routeRcrdBtn"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:enabled="true"
         android:clickable="true"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:nestedScrollingEnabled="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save"
-        android:id="@+id/btnRec"
-        android:layout_alignTop="@+id/btnSaveRoute"
+        android:id="@+id/btnSaveRoute"
+        android:layout_alignTop="@+id/btnRcrdRoute"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="recordBtn"
+        android:onClick="routeSaveBtn"
         android:enabled="true"
         android:clickable="true"
         android:visibility="invisible"/>
@@ -63,9 +70,7 @@
         android:onClick="saveToFile"
         android:id="@+id/btnFileSave"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/btnShowRoute"
-        android:layout_toRightOf="@+id/btnFileLoad"
-        android:layout_toEndOf="@+id/btnFileLoad" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"

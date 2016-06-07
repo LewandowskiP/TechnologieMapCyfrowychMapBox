@@ -210,7 +210,7 @@ public class RouteList {
                                 pointsAdded++; //liczba oddanych punktow
                             }
                         }
-                }
+                 }
             }
         return pointsAdded; //crossing done
     }

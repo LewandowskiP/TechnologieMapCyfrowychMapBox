@@ -38,7 +38,7 @@ public class Route {
         points.add(new LatLng(loc));
         Log.d("Test", "Zrobilem: " + loc.toString());
         pointsNum++;
-    }
+     }
 
     public int getPointsNum() {
         return pointsNum;

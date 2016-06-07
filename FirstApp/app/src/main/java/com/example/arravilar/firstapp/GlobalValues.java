@@ -3,7 +3,7 @@ package com.example.arravilar.firstapp;
 /**
  * Created by Przemysław on 2016-04-12.
  */
-public class GlobalValues {
+public class GlobalValues  {
 
     private static GlobalValues globalValues =null;
     private boolean recordRoute;

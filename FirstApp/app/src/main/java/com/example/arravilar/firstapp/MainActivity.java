@@ -102,7 +102,7 @@ public class MainActivity extends Activity {
             Log.d("123", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
             Log.d("123",GlobalValues.getInstance().getRouteList().getRoutes().get(GlobalValues.getInstance().getRouteList().getRouteNumber()-1).getPoint(0).toString());
         }
-    }
+     }
 
     public void showRoute(View v) {
         for (int i = 0; i< GlobalValues.getInstance().getRouteList().getRouteNumber(); i++) {

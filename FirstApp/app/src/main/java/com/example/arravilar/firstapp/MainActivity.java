@@ -119,8 +119,8 @@ public class MainActivity extends Activity {
 
                             mapboxMap.addPolyline(new PolylineOptions()
                                     .add(pointsArray)
-                                    //.color(Color.parseColor("#3bb2d0"))
-                                    .color(Color.parseColor("#45df67"))
+                                    .color(Color.parseColor(MyColor.getInstance().getColor()))
+                                    //.color(Color.parseColor("#45df67"))
                                     .width(2));
 
                         }

@@ -7,6 +7,19 @@
 
     <!-- Set the starting camera position and map style using xml-->
 
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        mapbox:access_token="@string/accessToken"
+        mapbox:style_url="@string/style_mapbox_streets"
+        mapbox:center_latitude="40.73581"
+        mapbox:center_longitude="-73.99155"
+        mapbox:zoom="11"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,19 +74,6 @@
         android:text="Load From File"
         android:onClick="loadFromFile"
         android:id="@+id/btnFileLoad"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <com.mapbox.mapboxsdk.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        mapbox:access_token="@string/accessToken"
-        mapbox:style_url="@string/style_mapbox_streets"
-        mapbox:center_latitude="40.73581"
-        mapbox:center_longitude="-73.99155"
-        mapbox:zoom="11"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />

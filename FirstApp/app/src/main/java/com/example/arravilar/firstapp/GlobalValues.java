@@ -1,5 +1,7 @@
 package com.example.arravilar.firstapp;
 
+import com.mapbox.mapboxsdk.geometry.LatLng;
+
 /**
  * Created by Przemysław on 2016-04-12.
  */
@@ -9,6 +11,9 @@ public class GlobalValues  {
     private boolean recordRoute;
     private boolean keepCentered;
     private static RouteList routeList;
+    private LatLng destination;
+    private LatLng start;
+    private LatLng lastLocation;
 
     private GlobalValues()
     {
@@ -23,6 +28,10 @@ public class GlobalValues  {
         }
         return globalValues;
     }
+    public LatLng getDestination() { return destination;}
+    public LatLng getStart() {return start;}
+    public void setStart(LatLng start) {this.start = start;}
+    public void setDestination(LatLng destination) {this.destination = destination;}
     public boolean getRecordRoute()
     {
         return recordRoute;

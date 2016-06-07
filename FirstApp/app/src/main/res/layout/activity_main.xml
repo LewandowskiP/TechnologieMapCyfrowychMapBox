@@ -56,9 +56,9 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Show route"
-        android:onClick="showRoute"
-        android:id="@+id/btnShowRoute"
+        android:text="Show ways"
+        android:onClick="showWays"
+        android:id="@+id/btnShowWays"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -70,8 +70,8 @@
         android:onClick="saveToFile"
         android:id="@+id/btnFileSave"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/btnShowRoute"
-        android:layout_toStartOf="@+id/btnShowRoute" />
+        android:layout_toLeftOf="@+id/btnShowWays"
+        android:layout_toStartOf="@+id/btnShowWays" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -98,5 +98,25 @@
         android:checked="false"
         android:enabled="true"
         android:onClick="centerToggleButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear map"
+        android:onClick="clearMap"
+        android:id="@+id/btnClearMap"
+        android:layout_below="@+id/btnShowWays"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show route"
+        android:onClick="showRoute"
+        android:layout_below="@+id/btnClearMap"
+        android:layout_alignLeft="@+id/btnClearMap"
+        android:layout_alignStart="@+id/btnClearMap"
+        android:id="@+id/btnShowRoute" />
 
 </RelativeLayout>

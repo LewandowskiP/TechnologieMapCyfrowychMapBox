@@ -11,6 +11,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ToggleButton;
 
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
@@ -31,6 +32,7 @@ public class MainActivity extends Activity {
 
     public Button btnSaveRoute;
     public Button btnRcrdRoute;
+    public ToggleButton tglBtnCenter;
     public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
 
 
@@ -43,6 +45,7 @@ public class MainActivity extends Activity {
 
         btnRcrdRoute = (Button) findViewById(R.id.btnRcrdRoute);
         btnSaveRoute = (Button) findViewById(R.id.btnSaveRoute);
+        tglBtnCenter = (ToggleButton) findViewById(R.id.centerButton);
         GlobalValues.getInstance().setRecordRoute(false);
 
         mapView = (MapView) findViewById(R.id.mapView);
@@ -66,12 +69,14 @@ public class MainActivity extends Activity {
                          Log.d("111","111");
                          GlobalValues.getInstance().getRouteList().getRoutes().get(GlobalValues.getInstance().getRouteList().getRouteNumber()-1).addPoint(new LatLng(mapboxMap.getMyLocation()));
                      }
-                        CameraPosition cameraPosition = new CameraPosition.Builder()
-                                .target(new LatLng(mapboxMap.getMyLocation())) // set the camera's center position
-                                .zoom(mapboxMap.getCameraPosition().zoom)  // set the camera's zoom level
-                                .tilt(mapboxMap.getCameraPosition().tilt)  // set the camera's tilt
-                                .build();
-                                mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                        if (GlobalValues.getInstance().getKeepCentered()) {
+                            CameraPosition cameraPosition = new CameraPosition.Builder()
+                                    .target(new LatLng(mapboxMap.getMyLocation())) // set the camera's center position
+                                    .zoom(mapboxMap.getCameraPosition().zoom)  // set the camera's zoom level
+                                    .tilt(mapboxMap.getCameraPosition().tilt)  // set the camera's tilt
+                                    .build();
+                            mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                        }
                     }
 
                 });
@@ -80,10 +85,28 @@ public class MainActivity extends Activity {
         });
     }
 
+    public void centerToggleButton(View v){
+        if (tglBtnCenter.isChecked()) {
+            GlobalValues.getInstance().setKeepCentered(true);
+
+            mapView.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(final MapboxMap mapboxMap) {
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(mapboxMap.getMyLocation())) // set the camera's center position
+                            .zoom(mapboxMap.getCameraPosition().zoom)  // set the camera's zoom level
+                            .tilt(mapboxMap.getCameraPosition().tilt)  // set the camera's tilt
+                            .build();
+                    mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                }
+            });
+        }
+        else GlobalValues.getInstance().setKeepCentered(false);
+    }
 
     public void routeRcrdBtn(View v) {
         if (GlobalValues.getInstance().getRecordRoute()==false) {
-            btnSaveRoute.setText("Save recorded points");
+            //btnSaveRoute.setText("Save recorded points");
             btnRcrdRoute.setVisibility(View.INVISIBLE);
             btnSaveRoute.setVisibility(View.VISIBLE);
             Intent intent = new Intent(this, Main2Activity.class);
@@ -94,7 +117,7 @@ public class MainActivity extends Activity {
     public void routeSaveBtn(View v) {
 
         if (GlobalValues.getInstance().getRecordRoute()==true){
-            btnRcrdRoute.setText("Record");
+            //btnRcrdRoute.setText("Record");
             GlobalValues.getInstance().setRecordRoute(false);
             btnRcrdRoute.setVisibility(View.VISIBLE);
             btnSaveRoute.setVisibility(View.INVISIBLE);

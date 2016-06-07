@@ -7,11 +7,13 @@ public class GlobalValues  {
 
     private static GlobalValues globalValues =null;
     private boolean recordRoute;
+    private boolean keepCentered;
     private static RouteList routeList;
 
     private GlobalValues()
     {
         recordRoute = false;
+        keepCentered = false;
         routeList = null;
     }
     public static GlobalValues getInstance()
@@ -35,5 +37,11 @@ public class GlobalValues  {
     public void setRecordRoute(boolean state)
     {
         recordRoute = state;
+    }
+    public void setKeepCentered(boolean state){
+        keepCentered = state;
+    }
+    public boolean getKeepCentered(){
+        return keepCentered;
     }
 }

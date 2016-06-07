@@ -29,7 +29,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Record"
+        android:text="Start tracking"
         android:id="@+id/btnRcrdRoute"
         android:onClick="routeRcrdBtn"
         android:layout_alignParentBottom="true"
@@ -43,7 +43,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:text="Terminate tracking"
         android:id="@+id/btnSaveRoute"
         android:layout_alignTop="@+id/btnRcrdRoute"
         android:layout_alignParentLeft="true"
@@ -70,7 +70,8 @@
         android:onClick="saveToFile"
         android:id="@+id/btnFileSave"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_toLeftOf="@+id/btnShowRoute"
+        android:layout_toStartOf="@+id/btnShowRoute" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -82,5 +83,20 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="center"
+        android:id="@+id/centerButton"
+        android:layout_above="@+id/btnRcrdRoute"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textOn="center"
+        android:textOff="center"
+        android:clickable="true"
+        android:checked="false"
+        android:enabled="true"
+        android:onClick="centerToggleButton" />
 
 </RelativeLayout>

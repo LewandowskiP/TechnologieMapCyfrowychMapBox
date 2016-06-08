@@ -134,7 +134,8 @@ public class MainActivity extends Activity {
     }
 
 
-    public void showWays(View v) {
+    public void showWays(View v)
+    {
         if (GlobalValues.getInstance().getRouteList() != null)
             for (Route r : GlobalValues.getInstance().getRouteList().getRoutes()) {
                 ArrayList<LatLng> points = r.getPoints();

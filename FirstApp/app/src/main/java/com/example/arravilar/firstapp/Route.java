@@ -1,6 +1,5 @@
 package com.example.arravilar.firstapp;
 
-import android.location.Location;
 import android.util.Log;
 
 import com.mapbox.mapboxsdk.geometry.LatLng;

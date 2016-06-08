@@ -26,7 +26,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import hipster.model.Transition;
-import es.usc.citius.hipster.model.function.impl.*;
+import hipster.model.function.impl.ADStarNodeExpander;
 
 /**
  * <p>Iterative implementation of the forward Anytime Dynamic A* (AD*-f) search algorithm.</p>
@@ -55,7 +55,7 @@ import es.usc.citius.hipster.model.function.impl.*;
  *
  * @author Adrián González Sieira <<a href="adrian.gonzalez@usc.es">adrian.gonzalez@usc.es</a>>
  */
-public class ADStarForward<A,S,C extends Comparable<C>, N extends es.usc.citius.hipster.model.ADStarNode<A, S, C, N>> extends Algorithm<A, S, N> {
+public class ADStarForward<A,S,C extends Comparable<C>, N extends hipster.model.ADStarNode<A, S, C, N>> extends Algorithm<A, S, N> {
 
     protected S begin;
     protected Collection<S> goals;

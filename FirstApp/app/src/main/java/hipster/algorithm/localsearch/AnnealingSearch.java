@@ -7,52 +7,11 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
-import es.usc.citius.hipster.algorithm.Algorithm;
+import hipster.algorithm.Algorithm;
 import hipster.model.HeuristicNode;
 import hipster.model.Node;
 import hipster.model.function.NodeExpander;
 
-/**
- * Implementation of the simulated annealing search that is a probabilistic
- * technique for approximating the global optimum of a given function. It starts
- * the exploration from a random point as a global optimum and selects one of
- * its neighbors with a neighboring function. The neighbor will become the new
- * optimum if its associated cost is lower or if the acceptance probability
- * function returns a probability greater than a random number. The probability
- * function takes as an input the cost of the current selected node, the cost of
- * its randomly selected neighbour and the current temperature. The higher the
- * cost of the neighbour is or the lower the temperature is, the more unlikely
- * it is that the neighbour becomes the new optimum. The process continues until
- * the temperature is below a given threshold. The temperature decreases at each
- * iteration according to a geometric cooling schedule that has two parameters
- * alpha and temperature min. The main idea of this algorithm is to avoid to be
- * "trapped" in a bad local optimum by exploring more deeply the state space by
- * looking at states whose cost is not optimum but that may have interesting
- * neighbours. A user can adjusted the algorithm by tuning the alpha coefficient
- * (default 0.9) or the min temperature (0.00001) or by providing his own
- * implementation of the acceptance probability function (default: exp((old
- * score - new score) / current temperature)) or the neighbouring function
- * (random selection by default). Note: costs are Double in this implementation
- * and have no type parameters.
- * 
- * see <a href="https://en.wikipedia.org/wiki/Simulated_annealing">in
- * Wikipedia</a> and <a href="http://katrinaeg.com/simulated-annealing.html">in
- * annealing search</a> for more details.
- * 
- * @param <A>
- *            class defining the action
- * @param <S>
- *            class defining the state
- * @param <C>
- *            class defining the cost, must implement
- *            {@link java.lang.Comparable}
- * @param <N>
- *            type of the nodes
- * 
- * @author Christophe Moins <
- *         <a href="mailto:christophe.moins@yahoo.fr">christophe.moins@yahoo.fr
- *         </a>>
- */
 public class AnnealingSearch<A, S, N extends HeuristicNode<A, S, Double, N>> extends Algorithm<A, S, N> {
 
 	static final private Double DEFAULT_ALPHA = 0.9;
@@ -194,10 +153,7 @@ public class AnnealingSearch<A, S, N extends HeuristicNode<A, S, Double, N>> ext
 	 * @param <N>
 	 */
 	public interface SuccessorFinder<A, S, N extends Node<A, S, N>> {
-		/**
-		 * @param Node
-		 * @return the successor of a node.
-		 */
+
 		N estimate(N node, NodeExpander<A, S, N> nodeExpander);
 	}
 }

@@ -4,25 +4,13 @@ import hipster.model.ADStarNode;
 import hipster.model.AbstractNode;
 import hipster.model.Transition;
 
-/**
- * Interface defining the basic operations for {@link es.usc.citius.hipster.model.Node} to be used with
- * {@link es.usc.citius.hipster.algorithm.ADStarForward}. Contains the declaration of the methods to retrieve
- * te cost elements of the node (G and V) and the definition of the {@link ADStarNodeImpl.Key}
- * to compare {@link ADStarNodeImpl} elements.
- *
- * @param <A> type of the actions ({@code Void} if actions are not explicit).
- * @param <S> type of the states.
- * @param <C> type of the cost
- *
- * @author Adrián González Sieira <adrian.gonzalez@usc.es>
- */
 public class ADStarNodeImpl<A, S, C extends Comparable<C>>
         extends AbstractNode<A, S, ADStarNodeImpl<A, S, C>>
         implements ADStarNode<A, S, C, ADStarNodeImpl<A, S, C>> {
 
     protected C g;
     protected C v;
-    protected es.usc.citius.hipster.model.ADStarNode.Key<C> key;
+    protected hipster.model.ADStarNode.Key<C> key;
     protected boolean doUpdate;
 
     /**
@@ -36,7 +24,7 @@ public class ADStarNodeImpl<A, S, C extends Comparable<C>>
      * @param v score to goal
      * @param k key value evaluated over G and V
      */
-    public ADStarNodeImpl(Transition<A, S> transition, ADStarNodeImpl<A, S, C> previousNode, C g, C v, es.usc.citius.hipster.model.ADStarNode.Key<C> k) {
+    public ADStarNodeImpl(Transition<A, S> transition, ADStarNodeImpl<A, S, C> previousNode, C g, C v, hipster.model.ADStarNode.Key<C> k) {
         super(previousNode, transition.getState(), transition.getAction());
         this.g = g;
         this.v = v;
@@ -79,7 +67,7 @@ public class ADStarNodeImpl<A, S, C extends Comparable<C>>
     }
 
     @Override
-    public void setKey(es.usc.citius.hipster.model.ADStarNode.Key<C> key) {
+    public void setKey(hipster.model.ADStarNode.Key<C> key) {
         this.key = key;
     }
 
@@ -124,25 +112,14 @@ public class ADStarNodeImpl<A, S, C extends Comparable<C>>
         return g;
     }
 
-    /**
-     * Method to retrieve the parent ADStarNode, the same
-     * retrieved by {@link es.usc.citius.hipster.model.Transition#getFromState()}.
-     *
-     * @return parent {@link ADStarNodeImpl},
-     */
+
     @SuppressWarnings("unchecked") //suppress warnings to return an ADStarNode instead of Node, which is the inherited return type from parent
     @Override
     public ADStarNodeImpl<A, S, C> previousNode() {
         return (ADStarNodeImpl<A, S, C>) previousNode;
     }
 
-    /**
-     * Compares ADSTarNode instances attending to their {@link es.usc.citius.hipster.model.ADStarNode.Key}
-     * values.
-     *
-     * @param o ADStarNode instance
-     * @return usual comparison value
-     */
+
     @Override
     public int compareTo(ADStarNodeImpl<A, S, C> o) {
         return this.key.compareTo(o.key);

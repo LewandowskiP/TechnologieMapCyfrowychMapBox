@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
                 mapboxMap.setOnMapLongClickListener(new MapboxMap.OnMapLongClickListener() {
                                                         @Override
                                                         public void onMapLongClick(@NonNull LatLng point) {
-                                                            GlobalValues.getInstance().setDestination(point);
+                                                            GlobalValues.getInstance().setDestination(new LatLng(point));
                                                             Log.d("Where is it", point.toString());
                                                         }
                                                     }
@@ -161,15 +161,16 @@ public class MainActivity extends Activity {
 
     public void showRoute(View v) {
         MyRoute mr = new MyRoute();
-        final LatLng startLocation = new LatLng();
-        mapView.getMapAsync(new OnMapReadyCallback() {
+       LatLng startLocation = new LatLng(54.3707, 18.6147);
+        /*mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(final MapboxMap mapboxMap) {
                 startLocation.setLatitude(mapboxMap.getMyLocation().getLatitude());
                 startLocation.setLongitude(mapboxMap.getMyLocation().getLongitude());
             }
-        });
-        mr.findWay(startLocation,GlobalValues.getInstance().getDestination());
+        });*/
+        Log.d("Szukam:", startLocation.toString());
+        mr.findWay(new LatLng(startLocation), new LatLng(GlobalValues.getInstance().getDestination()));
     }
 
 
@@ -195,6 +196,7 @@ public class MainActivity extends Activity {
         }
         Log.d("ladowanie", "1252123123");
         GlobalValues.getInstance().getRouteList().loadList();
+        Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
     }
 
 

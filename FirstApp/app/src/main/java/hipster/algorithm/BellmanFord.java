@@ -19,12 +19,12 @@ package hipster.algorithm;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 import hipster.model.CostNode;
 import hipster.model.function.NodeExpander;
 import hipster.util.Predicate;
-import es.usc.citius.lab.hipster.collections.HashQueue;
 
 /**
  * <p>
@@ -64,7 +64,8 @@ public class BellmanFord<A,S,C extends Comparable<C>,N extends CostNode<A,S,C,N>
         protected Map<S, N> explored;
 
         protected Iterator(){
-            this.queue = new HashQueue<S>();
+
+            this.queue = new PriorityQueue<>();
             this.explored = new HashMap<S, N>();
             this.queue.add(initialNode.state());
             this.explored.put(initialNode.state(), initialNode);

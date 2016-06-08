@@ -18,8 +18,17 @@ package hipster.model.problem;
 
 
 import hipster.model.Transition;
-import es.usc.citius.hipster.model.function.*;
-import es.usc.citius.hipster.model.function.impl.*;
+import hipster.model.function.ActionFunction;
+import hipster.model.function.ActionStateTransitionFunction;
+import hipster.model.function.CostFunction;
+import hipster.model.function.HeuristicFunction;
+import hipster.model.function.NodeExpander;
+import hipster.model.function.NodeFactory;
+import hipster.model.function.TransitionFunction;
+import hipster.model.function.impl.BinaryOperation;
+import hipster.model.function.impl.LazyActionStateTransitionFunction;
+import hipster.model.function.impl.LazyNodeExpander;
+import hipster.model.function.impl.WeightedNodeFactory;
 import hipster.model.impl.UnweightedNode;
 import hipster.model.impl.WeightedNode;
 
@@ -57,27 +66,11 @@ public final class ProblemBuilder {
                 this.finalState = finalState;
             }
 
-            /**
-             * Create a problem model that uses explicit actions.
-             * This forces to implement functions to operate with actions,
-             * such as the {@link es.usc.citius.hipster.model.function.ActionFunction}
-             * to obtain applicable actions for a given state,
-             * or {@link es.usc.citius.hipster.model.function.ActionStateTransitionFunction}
-             * to apply actions to states in order to obtain new states.
-             * Use this function when you want to define explicitly the actions of your problem
-             * (for example, in the 8-Puzzle, actions are UP/DOWN/LEFT/RIGHT movements, see example
-             * problems for more information).
-             */
+
             public WithAction defineProblemWithExplicitActions(){
                 return new WithAction();
             }
 
-            /**
-             * This generates a simple problem model without explicit actions. Use this
-             * when you just want to create a simple {@link es.usc.citius.hipster.model.function.impl.StateTransitionFunction}
-             * for your search problem that defines the reachable states from
-             * a given states, without worrying about actions.
-             */
             public WithoutAction defineProblemWithoutActions(){
                 return new WithoutAction();
             }
@@ -89,23 +82,7 @@ public final class ProblemBuilder {
                 private WithoutAction(){}
 
 
-                /**
-                 * Define the transition function for your problem. The transition function
-                 * ({@link es.usc.citius.hipster.model.function.impl.StateTransitionFunction})
-                 * is the function that computes all the reachable states from a given state.
-                 * <pre class="prettyprint">
-                 * {@code
-                 * StateTransitionFunction<S> tf =
-                 *      new StateTransitionFunction<S>(){
-                 *          public Iterable<S> successorsOf(S state) {
-                 *              return successors; // return successors of state
-                 *          }
-                 *      }
-                 * }
-                 * </pre>
-                 *
-                 * @param transitionFunction transition function to be used.
-                 */
+
                 public Uninformed<Void> useTransitionFunction(TransitionFunction<Void, S> transitionFunction){
                     return new Uninformed<Void>(transitionFunction);
                 }
@@ -136,37 +113,19 @@ public final class ProblemBuilder {
                         this.af = af;
                     }
 
-                    /**
-                     * Select the {@link es.usc.citius.hipster.model.function.ActionStateTransitionFunction}
-                     * that takes a state and an action and returns the resultant state of applying the action
-                     * to the state.
-                     *
-                     * @param atf action state function to be used.
-                     */
+
                     public Uninformed<A> useTransitionFunction(ActionStateTransitionFunction<A, S> atf){
                         return new Uninformed<A>(new LazyActionStateTransitionFunction<A, S>(af, atf));
                     }
                 }
 
-                /**
-                 * Use a transition function that computes all the actions/states that are
-                 * reachable from a given state. The function returns a set of Transition
-                 * with the action and the new resultant state. If you prefer to define actions
-                 * separately, use useActionFunction instead.
-                 * @param transitionFunction transition function.
-                 *
-                 */
+
                 public <A> Uninformed<A> useTransitionFunction(TransitionFunction<A, S> transitionFunction){
                     return new Uninformed<A>(transitionFunction);
                 }
             }
 
-            /**
-             * Creates a uninformed problem (a problem without a cost/heuristic evaluator) to
-             * be used with uninformed algorithms like DFS, BFS.
-             *
-             * @param <A> action type.
-             */
+
             public final class Uninformed<A> {
                 private final TransitionFunction<A,S> tf;
 

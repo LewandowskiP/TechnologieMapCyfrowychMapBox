@@ -17,6 +17,8 @@
 package hipster.util.examples.maze;
 
 
+import android.graphics.Point;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;

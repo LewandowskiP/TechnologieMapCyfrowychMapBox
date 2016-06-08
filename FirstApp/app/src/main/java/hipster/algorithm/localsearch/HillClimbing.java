@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import es.usc.citius.hipster.algorithm.Algorithm;
+import hipster.algorithm.Algorithm;
 import hipster.model.HeuristicNode;
 import hipster.model.function.NodeExpander;
 

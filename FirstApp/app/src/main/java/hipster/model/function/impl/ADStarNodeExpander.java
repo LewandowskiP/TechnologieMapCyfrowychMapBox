@@ -7,33 +7,17 @@ import java.util.Map;
 
 import hipster.model.ADStarNode;
 import hipster.model.Transition;
-import es.usc.citius.hipster.model.function.*;
+import hipster.model.function.CostFunction;
+import hipster.model.function.HeuristicFunction;
+import hipster.model.function.NodeExpander;
+import hipster.model.function.NodeFactory;
+import hipster.model.function.ScalarFunction;
+import hipster.model.function.TransitionFunction;
 import hipster.model.problem.SearchComponents;
 
-/**
- * This class is an implementation of {@link es.usc.citius.hipster.model.function.NodeExpander} for nodes
- * of type {@link es.usc.citius.hipster.model.ADStarNode}. This node expander executes the main
- * function of a node expander: taking as input a node generates the successor nodes using the information
- * of the transition, cost and heuristic functions. This expander, to be used
- * with {@link es.usc.citius.hipster.algorithm.ADStarForward}, also
- * executes the following operations:
- *
- * <li>
- *     <ul>Obtain a set of iterable nodes from the transitions that changed since the last solution found of AD*</ul>
- *     <ul>Update nodes in consistent and inconsistent states</ul>
- *     <ul>Store the nodes visited by the algorithm</ul>
- *     <ul>Get the predecessors nodes of a current one which were visited by the algorithm</ul>
- * </li>
- *
- * @param <A> type of the actions
- * @param <S> type of the state
- * @param <C> type of the cost (must extend {@link java.lang.Comparable})
- * @param <N> node type
- *
- * @author Adrián González Sieira <<a href="adrian.gonzalez@usc.es">adrian.gonzalez@usc.es</a>>
- */
-public class ADStarNodeExpander<A, S, C extends Comparable<C>, N extends es.usc.citius.hipster.model.ADStarNode<A, S, C, N>>
-        implements NodeExpander<A, S, N>{
+
+public class ADStarNodeExpander<A, S, C extends Comparable<C>, N extends hipster.model.ADStarNode<A, S, C, N>>
+        implements NodeExpander<A, S, N> {
 
     private final TransitionFunction<A, S> successorFunction;
     private final TransitionFunction<A, S> predecessorFunction;
@@ -150,15 +134,7 @@ public class ADStarNodeExpander<A, S, C extends Comparable<C>, N extends es.usc.
         return nodes;
     }
 
-    /**
-     * Updates a node in consistent state (V > G) updating the path
-     * and the cost if the parent node and the transition improves the current cost of the node.
-     *
-     * @param node {@link es.usc.citius.hipster.algorithm.ADStarForward} node to update, in consistent state
-     * @param parent previous {@link es.usc.citius.hipster.algorithm.ADStarForward} of the node
-     * @param transition {@link es.usc.citius.hipster.model.Transition} between the parent and the node
-     * @return true if the node has changed its {@link es.usc.citius.hipster.model.impl.ADStarNodeImpl.Key}
-     */
+
     private boolean updateConsistent(N node, N parent, Transition<A, S> transition) {
         // parent.getG().add(this.costFunction.evaluate(transition));
         C accumulatedCost = add.apply(parent.getG(), costFunction.evaluate(transition));
@@ -169,21 +145,14 @@ public class ADStarNodeExpander<A, S, C extends Comparable<C>, N extends es.usc.
             node.setState(transition.getState());
             node.setAction(transition.getAction());
             // node.state = transition;
-            node.setKey(new es.usc.citius.hipster.model.ADStarNode.Key<C>(node.getG(), node.getV(),
+            node.setKey(new hipster.model.ADStarNode.Key<C>(node.getG(), node.getV(),
                     heuristicFunction.estimate(transition.getState()), epsilon, add, scale));
             return true;
         }
         return false;
     }
 
-    /**
-     * Updates a node in inconsistent state (V <= G), evaluating all the predecessors of the current node
-     * and updating the parent to the node which combination of cost and transition is minimal.
-     *
-     * @param node inconsistent {@link es.usc.citius.hipster.algorithm.ADStarForward} node to update
-     * @param predecessorMap map containing the the predecessor nodes and
-     * @return true if the node has changed its {@link es.usc.citius.hipster.model.impl.ADStarNodeImpl.Key}
-     */
+
     private boolean updateInconsistent(N node, Map<Transition<A, S>, N> predecessorMap) {
         C minValue = add.getIdentityElem();
         N minParent = null;
@@ -211,13 +180,7 @@ public class ADStarNodeExpander<A, S, C extends Comparable<C>, N extends es.usc.
         return true;
     }
 
-    /**
-     * Retrieves a map with the predecessors states and the node associated
-     * to each predecessor state.
-     *
-     * @param current current state to calculate predecessors of
-     * @return map pairs of <state, node> with the visited predecessors of the state
-     */
+
     private Map<Transition<A, S>, N> predecessorsMap(S current){
         //Map<Transition, Node> containing predecessors relations
         Map<Transition<A, S>, N> mapPredecessors = new HashMap<Transition<A, S>, N>();
@@ -231,32 +194,19 @@ public class ADStarNodeExpander<A, S, C extends Comparable<C>, N extends es.usc.
         return mapPredecessors;
     }
 
-    /**
-     * Assigns the maximum value to V in the current node.
-     *
-     * @param node {@link es.usc.citius.hipster.model.impl.ADStarNodeImpl} to modify the value of V
-     */
+
     public void setMaxV(N node) {
         node.setV(this.add.getMaxElem());
     }
 
-    /**
-     * Assign a value to the inflation parameter of the heuristic.
-     *
-     * @param epsilon new value
-     */
+
     public void setEpsilon(double epsilon) {
         this.epsilon = epsilon;
     }
 
-    /**
-     * @return map with the states and nodes visited by the algorithm
-     */
     public Map<S, N> getVisited() { return visited; }
 
-    /**
-     * Clears the set of visited nodes.
-     */
+
     public void clearVisited() { this.visited = new HashMap<S, N>(); }
 
     /**

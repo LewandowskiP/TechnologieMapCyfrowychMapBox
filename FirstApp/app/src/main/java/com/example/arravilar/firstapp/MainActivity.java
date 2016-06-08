@@ -1,18 +1,16 @@
 package com.example.arravilar.firstapp;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.app.Activity;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
@@ -22,8 +20,6 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 

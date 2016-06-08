@@ -1,16 +1,18 @@
 package com.example.arravilar.firstapp;
 
-import android.util.Log;
-
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.StringTokenizer;
+
+import hipster.graph.GraphBuilder;
+import hipster.graph.HipsterDirectedGraph;
 
 /**
  * Created by Przemysław on 2016-06-07.
  */
+
+
 public class MyRoute {
     private double distance;
     private ArrayList<LatLng> route;
@@ -65,10 +67,19 @@ public class MyRoute {
     public int findWay(LatLng start, LatLng stop) {
         int result;
         LatLng startPos = findNearestNode(start);
-        if (startPos != null) Log.d("POS Start", startPos.toString());
-        LatLng stopPos = findNearestNode(stop);
-        if (stopPos != null) Log.d("POS Stop", stopPos.toString());
+        if (startPos != null) {
+            LatLng stopPos = findNearestNode(stop);
+            if (stopPos != null) {
+                GraphBuilder gb = GraphBuilder.<LatLng, Double>create();
+           /* for (LatLng :)*/
 
-        return 1;
+
+            }
+
+            return 0;
+        }
+        return 0;
     }
 }
+
+

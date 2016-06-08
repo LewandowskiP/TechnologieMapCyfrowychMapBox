@@ -1,21 +1,15 @@
 package com.example.arravilar.firstapp;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.geometry.LatLngSpan;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-
 import java.util.ArrayList;
 
 /**

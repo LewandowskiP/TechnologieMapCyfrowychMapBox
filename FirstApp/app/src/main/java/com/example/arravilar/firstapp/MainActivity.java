@@ -129,7 +129,7 @@ public class MainActivity extends Activity {
             btnSaveRoute.setVisibility(View.INVISIBLE);
             //sprawdz czy ostatnio dodana przecina się z pozostałymi
             Log.d("123", GlobalValues.getInstance().getRouteList().getRoutes().get(GlobalValues.getInstance().getRouteList().getRouteNumber() - 1).getPoint(0).toString());
-            //Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
+            Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
         }
     }
 
@@ -153,7 +153,7 @@ public class MainActivity extends Activity {
                     });
                 }
             }
-        Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
+        //Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
         RoutesToMapConverter rtmc = new RoutesToMapConverter();
         rtmc.convert(GlobalValues.getInstance().getRouteList());
     }

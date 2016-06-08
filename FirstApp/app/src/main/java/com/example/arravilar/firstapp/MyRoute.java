@@ -1,12 +1,17 @@
 package com.example.arravilar.firstapp;
 
+import android.util.Log;
+
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import hipster.algorithm.Hipster;
 import hipster.graph.GraphBuilder;
+import hipster.graph.GraphSearchProblem;
 import hipster.graph.HipsterDirectedGraph;
+import hipster.model.problem.SearchProblem;
 
 /**
  * Created by Przemysław on 2016-06-07.
@@ -63,17 +68,30 @@ public class MyRoute {
         return null;
     }
 
+    private void getMyNeighburs(GraphBuilder<LatLng,Double> gb, LatLng my)
+    {
+        for (LatLng r : myMap.get(my))
+        {
+            gb.connect(my).to(r).withEdge(MyMath.getInstance().distance(my,r));
+            getMyNeighburs(gb,r);
+        }
+    }
 
     public int findWay(LatLng start, LatLng stop) {
         int result;
+        LatLng current;
         LatLng startPos = findNearestNode(start);
+        current = startPos;
         if (startPos != null) {
             LatLng stopPos = findNearestNode(stop);
             if (stopPos != null) {
                 GraphBuilder gb = GraphBuilder.<LatLng, Double>create();
-           /* for (LatLng :)*/
+                getMyNeighburs(gb,startPos);
 
-
+                HipsterDirectedGraph hdg = gb.createDirectedGraph();
+                SearchProblem p = GraphSearchProblem.startingFrom(startPos).in(hdg).takeCostsFromEdges().build();
+                Log.d("Wynik",Hipster.createAStar(p).search(stopPos).getGoalNodes().toString());
+                return 1;
             }
 
             return 0;

@@ -20,9 +20,10 @@ public class RoutesToMapConverter {
         double lng = 0;
         int totalNodes = 0;
         for (Route r : routeList.getRoutes()) {
+            Log.d("Route" , r.toString());
             LatLng last = null;
             for (LatLng l : r.getPoints()) {
-
+                Log.d("RPoint" , l.toString());
                 lat = MyMath.getInstance().round(l.getLatitude());
                 lng = MyMath.getInstance().round(l.getLongitude());
                 LatLng toPut = new LatLng(lat, lng, 0);
@@ -31,8 +32,10 @@ public class RoutesToMapConverter {
 
                 if (result.containsKey(toPut)) {
                     list = result.get(toPut);
+                    Log.d("RPoint" , "piust");
                     if (last != null) list.add(last);
                 } else {
+                    Log.d("RPoint" , "buł");
                     list = new ArrayList<LatLng>();
                     list.add(last);
                     result.put(toPut, list);

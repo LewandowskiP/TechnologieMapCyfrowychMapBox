@@ -5,6 +5,7 @@ import android.util.Log;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import hipster.algorithm.Algorithm;
@@ -91,8 +92,9 @@ public class MyRoute {
         }
     }
 
-    public int findWay(LatLng start, LatLng stop) {
-        int result;
+    public ArrayList<LatLng> findWay(LatLng start, LatLng stop) {
+        ArrayList<LatLng> result = null;
+        Collection<LatLng> xx ;
         LatLng current;
         LatLng startPos = findNearestNode(start);
         current = startPos;
@@ -110,17 +112,17 @@ public class MyRoute {
                 HipsterDirectedGraph hdg = gb.createDirectedGraph();
                 Log.d("Graf", hdg.toString());
                 SearchProblem p = GraphSearchProblem.startingFrom(startPos).in(hdg).takeCostsFromEdges().build();
-                Algorithm.SearchResult sr = Hipster.createAStar(p).search(stopPos);
+                Algorithm sr = Hipster.createAStar(p);
+                xx = sr.search(stopPos).getGoalNodes();
 
+                Log.d("Wynik", xx.toString());
 
-                Log.d("Wynik", sr.toString());
-
-                return 1;
+                return result ;
             }
 
-            return 0;
+            return null;
         }
-        return 0;
+        return null;
     }
 }
 

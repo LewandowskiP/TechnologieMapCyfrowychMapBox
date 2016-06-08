@@ -155,14 +155,15 @@ public class MainActivity extends Activity {
                 }
             }
         //Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
-        RoutesToMapConverter rtmc = new RoutesToMapConverter();
-        rtmc.convert(GlobalValues.getInstance().getRouteList());
+
     }
 
 
     public void showRoute(View v) {
+        RoutesToMapConverter rtmc = new RoutesToMapConverter();
+        rtmc.convert(GlobalValues.getInstance().getRouteList());
         MyRoute mr = new MyRoute();
-       LatLng startLocation = new LatLng(54.3707, 18.6147);
+        final LatLng startLocation = new LatLng(54.3707, 18.6147);
         /*mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(final MapboxMap mapboxMap) {
@@ -171,7 +172,7 @@ public class MainActivity extends Activity {
             }
         });*/
         Log.d("Szukam:", startLocation.toString());
-        mr.findWay(new LatLng(startLocation), new LatLng(GlobalValues.getInstance().getDestination()));
+        if (mr.findWay(new LatLng(startLocation), new LatLng(GlobalValues.getInstance().getDestination()))!=null);
     }
 
 

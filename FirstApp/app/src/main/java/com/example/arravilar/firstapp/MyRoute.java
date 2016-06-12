@@ -4,15 +4,19 @@ import android.util.Log;
 
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
+import org.w3c.dom.Node;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import hipster.algorithm.AStar;
 import hipster.algorithm.Algorithm;
 import hipster.algorithm.Hipster;
 import hipster.graph.GraphBuilder;
 import hipster.graph.GraphSearchProblem;
 import hipster.graph.HipsterDirectedGraph;
+import hipster.model.CostNode;
 import hipster.model.problem.SearchProblem;
 
 /**
@@ -95,13 +99,14 @@ public class MyRoute {
     public ArrayList<LatLng> findWay(LatLng start, LatLng stop) {
         ArrayList<LatLng> result = null;
         Collection<LatLng> xx ;
+        Object[] a;
         LatLng current;
         LatLng startPos = findNearestNode(start);
         current = startPos;
         if (startPos != null) {
             Log.d("Start:", startPos.toString());
 
-            Log.d("Stop1:", stop.toString());
+            //Log.d("Stop1:", stop.toString());
             LatLng stopPos = new LatLng(findNearestNode(stop));
             if (stopPos != null) {
                 Log.d("Stop:", stopPos.toString());
@@ -112,10 +117,12 @@ public class MyRoute {
                 HipsterDirectedGraph hdg = gb.createDirectedGraph();
                 Log.d("Graf", hdg.toString());
                 SearchProblem p = GraphSearchProblem.startingFrom(startPos).in(hdg).takeCostsFromEdges().build();
-                Algorithm sr = Hipster.createAStar(p);
-                xx = sr.search(stopPos).getGoalNodes();
+                /*Algorithm<Void,LatLng,CostNode> sr = Hipster.createAStar(p);
 
-                Log.d("Wynik", xx.toString());
+                sr.search(stopPos).ge*/
+
+
+                Log.d("Wynik", Hipster.createAStar(p).search(stopPos).getOptimalPaths().toString());
 
                 return result ;
             }

@@ -7,12 +7,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ToggleButton;
 
+import com.mapbox.mapboxsdk.annotations.Icon;
+import com.mapbox.mapboxsdk.annotations.Marker;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
@@ -48,9 +52,9 @@ public class MainActivity extends Activity {
         tglBtnCenter = (ToggleButton) findViewById(R.id.centerButton);
         GlobalValues.getInstance().setRecordRoute(false);
 
+
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
-
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(final MapboxMap mapboxMap) {
@@ -58,15 +62,82 @@ public class MainActivity extends Activity {
                 mapboxMap.setMinZoom(5);
                 mapboxMap.setMaxZoom(20);
 
+                //set default Start MARKER
+                GlobalValues.getInstance().setStart(new LatLng(54.3707, 18.6147));
+                GlobalValues.getInstance().setStartMarker(mapboxMap.addMarker(new MarkerOptions()
+                        .position(GlobalValues.getInstance().getStart())
+                        .title("Start \nLat: "+GlobalValues.getInstance().getStart().getLatitude()
+                        +"\nLon: "+GlobalValues.getInstance().getStart().getLongitude())
+                    )
+                );
+
+                ///Listener dla zmiany KAMERY
+                mapboxMap.setOnCameraChangeListener(new MapboxMap.OnCameraChangeListener() {
+                    @Override
+                    public void onCameraChange(CameraPosition position) {
+
+                    }
+                });
+
+                ///Listener dla SCROLLA
+                mapboxMap.setOnScrollListener(new MapboxMap.OnScrollListener() {
+                    @Override
+                    public void onScroll() {
+                        if ((tglBtnCenter.isChecked())&&(GlobalValues.getInstance().getKeepCentered())){
+                            tglBtnCenter.setChecked(false);
+                            GlobalValues.getInstance().setKeepCentered(false);
+
+                        }
+                        //Schowaj window MARKERA
+                        if (GlobalValues.getInstance().getDestMarker()!=null)
+                            GlobalValues.getInstance().getDestMarker().hideInfoWindow();
+                        //Log.d("ZOOOOM",Double.toString(mapboxMap.getCameraPosition().zoom));
+                    }
+                });
+
+                ///Listener dla DLUGI KLICK na mapie
                 mapboxMap.setOnMapLongClickListener(new MapboxMap.OnMapLongClickListener() {
                                                         @Override
                                                         public void onMapLongClick(@NonNull LatLng point) {
                                                             GlobalValues.getInstance().setDestination(new LatLng(point));
+
+                                                            //Usun jesli juz byl
+                                                            if (GlobalValues.getInstance().getDestMarker()!=null) {
+                                                                Log.d("MAKRER","Dest Marker != Null");
+                                                                mapboxMap.removeMarker(GlobalValues.getInstance().getDestMarker());
+                                                            }
+                                                            //Dodaj MARKER
+                                                            GlobalValues.getInstance().setDestMarker(mapboxMap.addMarker(new MarkerOptions()
+                                                                    .position(point)
+                                                                    .title("Koniec \nLat: "+GlobalValues.getInstance().getDestination().getLatitude()
+                                                                            +"\nLon: "+GlobalValues.getInstance().getDestination().getLongitude())
+                                                                    )
+                                                            );
+                                                            //Show marker Info
+                                                            GlobalValues.getInstance().getDestMarker().showInfoWindow(mapboxMap, mapView);
                                                             Log.d("Where is it", point.toString());
                                                         }
                                                     }
 
                 );
+
+                ///Listener dla clicknieca na Marker
+                mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
+                  @Override
+                    public boolean onMarkerClick(@NonNull Marker marker){
+                      if (marker.isInfoWindowShown()){
+                          marker.hideInfoWindow();
+                      }
+                      else{
+                          marker.showInfoWindow(mapboxMap, mapView);
+                      }
+
+                      Log.d("MARKER","Kliknieto w marker"+marker.getPosition().toString());
+                      return true;
+                    }
+                });
+
+                ///Listener dla zmiany lokalziacji
                 mapboxMap.setOnMyLocationChangeListener(new MapboxMap.OnMyLocationChangeListener() {
                     @Override
                     public void onMyLocationChange(Location location) {
@@ -102,7 +173,7 @@ public class MainActivity extends Activity {
                 public void onMapReady(final MapboxMap mapboxMap) {
                     CameraPosition cameraPosition = new CameraPosition.Builder()
                             .target(new LatLng(mapboxMap.getMyLocation())) // set the camera's center position
-                            .zoom(mapboxMap.getCameraPosition().zoom)  // set the camera's zoom level
+                            .zoom(16.5)  // set the camera's zoom level
                             .tilt(mapboxMap.getCameraPosition().tilt)  // set the camera's tilt
                             .build();
                     mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -144,7 +215,6 @@ public class MainActivity extends Activity {
                     mapView.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(final MapboxMap mapboxMap) {
-
                             mapboxMap.addPolyline(new PolylineOptions()
                                     .add(pointsArray)
                                     .color(Color.parseColor(MyColor.getInstance().getColor()))
@@ -162,7 +232,8 @@ public class MainActivity extends Activity {
 
     public void showRoute(View v) {
         MyRoute mr = new MyRoute();
-       LatLng startLocation = new LatLng(54.3707, 18.6147);
+       //LatLng startLocation = new LatLng(54.3707, 18.6147);
+
         /*mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(final MapboxMap mapboxMap) {
@@ -170,8 +241,13 @@ public class MainActivity extends Activity {
                 startLocation.setLongitude(mapboxMap.getMyLocation().getLongitude());
             }
         });*/
-        Log.d("Szukam:", startLocation.toString());
-        mr.findWay(new LatLng(startLocation), new LatLng(GlobalValues.getInstance().getDestination()));
+
+        Log.d("Szukam:", GlobalValues.getInstance().getStart().toString());
+        mr.findWay(new LatLng(GlobalValues.getInstance().getStart()), new LatLng(GlobalValues.getInstance().getDestination()));
+        
+        for (LatLng point:mr.getRoute()) {
+            Log.d("PUNKT SCIEZKI-->",point.toString());
+        }
     }
 
 

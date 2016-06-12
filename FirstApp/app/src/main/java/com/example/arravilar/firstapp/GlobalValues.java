@@ -1,5 +1,6 @@
 package com.example.arravilar.firstapp;
 
+import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 /**
@@ -14,6 +15,8 @@ public class GlobalValues  {
     private LatLng destination;
     private LatLng start;
     private LatLng lastLocation;
+    private Marker startMarker;
+    private Marker destMarker;
 
     private GlobalValues()
     {
@@ -28,6 +31,10 @@ public class GlobalValues  {
         }
         return globalValues;
     }
+    public Marker getStartMarker() {return  startMarker;}
+    public void setStartMarker(Marker marker) {startMarker = marker; }
+    public Marker getDestMarker(){return destMarker;}
+    public void setDestMarker(Marker marker) {destMarker = marker; }
     public LatLng getDestination() { return destination;}
     public LatLng getStart() {return start;}
     public void setStart(LatLng start) {this.start = start;}

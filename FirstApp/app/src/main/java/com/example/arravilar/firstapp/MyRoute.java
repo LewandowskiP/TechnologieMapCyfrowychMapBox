@@ -80,13 +80,13 @@ public class MyRoute {
     }
 
     private void getMyNeighburs(GraphBuilder<LatLng, Double> gb, LatLng my) {
-        Log.d("Sądziedzi 1:", my.toString());
+        //Log.d("Sądziedzi 1:", my.toString());
         if (visited.contains(my) == false) {
             for (LatLng r : myMap.get(my)) {
 
                 if (r != null) {
                     if (r != my) {
-                        Log.d("Sasiedzie 2:", r.toString());
+                        //Log.d("Sasiedzie 2:", r.toString());
                         visited.add(my);
                         gb.connect(my).to(r).withEdge( MyMath.getInstance().distance(my, r));
                         getMyNeighburs(gb, r);

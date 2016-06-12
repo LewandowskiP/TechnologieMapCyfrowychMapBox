@@ -9,6 +9,9 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
@@ -60,10 +63,10 @@ public class RouteList {
     private  PointDouble getLineCoefficients(LatLng P1, LatLng P2){
         PointDouble punkt = new PointDouble();
 
-        Log.d("DEBUG //// KOORD P1Lat", Double.toString(P1.getLatitude()));
-        Log.d("DEBUG //// KOORD P1Lng", Double.toString(P1.getLongitude()));
-        Log.d("DEBUG //// KOORD P2Lat", Double.toString(P2.getLatitude()));
-        Log.d("DEBUG //// KOORD P2Lng", Double.toString(P2.getLongitude()));
+        //Log.d("DEBUG //// KOORD P1Lat", Double.toString(P1.getLatitude()));
+        //Log.d("DEBUG //// KOORD P1Lng", Double.toString(P1.getLongitude()));
+        //Log.d("DEBUG //// KOORD P2Lat", Double.toString(P2.getLatitude()));
+        //Log.d("DEBUG //// KOORD P2Lng", Double.toString(P2.getLongitude()));
 
         punkt.setA((P1.getLatitude()-P2.getLatitude())/(P1.getLongitude()-P2.getLongitude()));
         punkt.setB(P2.getLatitude()-P2.getLongitude()*punkt.getA());
@@ -86,28 +89,28 @@ public class RouteList {
         if ((aFactor>0)&&(P1.getLongitude()<P2.getLongitude())){
             if ((P1.getLongitude()<=xPoint.getLongitude())&&(xPoint.getLongitude()<=P2.getLongitude())
                 &&(P1.getLatitude()<=xPoint.getLatitude())&&(xPoint.getLatitude()<=P2.getLatitude())) {
-                Log.d("LEZZYYY:", "A>0 x1<x2");
+                //Log.d("LEZZYYY:", "A>0 x1<x2");
                 return 1;
             }
 
         }else if ((aFactor>0)&&(P2.getLongitude()<P1.getLongitude())){
             if ((P2.getLongitude()<=xPoint.getLongitude())&&(xPoint.getLongitude()<=P1.getLongitude())
                     &&(P2.getLatitude()<=xPoint.getLatitude())&&(xPoint.getLatitude()<=P1.getLatitude())){
-                Log.d("LEZZYYY:", "A>0 x2<x1");
+                //Log.d("LEZZYYY:", "A>0 x2<x1");
                 return 1;
             }
 
         }else if ((aFactor<=0)&&(P1.getLongitude()<P2.getLongitude())){
             if ((P1.getLongitude()<=xPoint.getLongitude())&&(xPoint.getLongitude()<=P2.getLongitude())
                     &&(P2.getLatitude()<=xPoint.getLatitude())&&(xPoint.getLatitude()<=P1.getLatitude())){
-                Log.d("LEZZYYY:", "A<=0 x1<x2");
+                //Log.d("LEZZYYY:", "A<=0 x1<x2");
                 return 1;
             }
 
         }else if ((aFactor<=0)&&(P2.getLongitude()<P1.getLongitude())){
             if ((P2.getLongitude()<=xPoint.getLongitude())&&(xPoint.getLongitude()<=P1.getLongitude())
                     &&(P1.getLatitude()<=xPoint.getLatitude())&&(xPoint.getLatitude()<=P2.getLatitude())){
-                Log.d("LEZZYYY:", "A<=0 x2<x1");
+                //Log.d("LEZZYYY:", "A<=0 x2<x1");
                 return 1;
             }
         }
@@ -123,7 +126,7 @@ public class RouteList {
 
         ///sprawdz czy punkty wspolne itd.
         if (checkIfCommon(S1P1, S1P2, S2P1, S2P2) == 0) {
-            Log.d("GOOOOOOWNO", "KAAAU");
+            //Log.d("GOOOOOOWNO", "KAAAU");
             return null;
 
         } else {
@@ -133,12 +136,12 @@ public class RouteList {
             if (S1A == S2A) {   //jesli odcinki są równoległe
                 return null;
             } else {     //jeśli się przecinają
-                Log.d("Debug Gdzie sie inają", "fffff");
+                //Log.d("Debug Gdzie sie inają", "fffff");
                 S1B = getLineCoefficients(S1P1, S1P2).getB();
                 S2B = getLineCoefficients(S2P1, S2P2).getB();
-                Log.d("DEBUG LICZBY///: S1A", Double.toString(S1A));
+                //Log.d("DEBUG LICZBY///: S1A", Double.toString(S1A));
                 //Log.d("DEBUG LICZBY///: S1B", Double.toString(S1B));
-               Log.d("DEBUG LICZBY///: S2A", Double.toString(S2A));
+                //Log.d("DEBUG LICZBY///: S2A", Double.toString(S2A));
                 //Log.d("DEBUG LICZBY///: S2B", Double.toString(S2B));
 
                 crossingPoint.setLongitude((S2B - S1B) / (S1A - S2A)); //find Longitude - X
@@ -153,7 +156,7 @@ public class RouteList {
                 // Log.d("Debug Punkkt 2", S1P2.toString());
                 // Log.d("Debug Punkkt 3", S2P1.toString());
                 // Log.d("Debug Punkkt 4", S2P2.toString());
-                Log.d("DEBUG punkt CROSS", crossingPoint.toString());
+                //Log.d("DEBUG punkt CROSS", crossingPoint.toString());
 
                 //check if point is a part of two sections
 
@@ -165,18 +168,22 @@ public class RouteList {
         }
     }
 
-    public int RouteMakeCrossing(){
+    public int RouteMakeCrossing(boolean checkAll){
         int routesCount = getRouteNumber();
         int pointsAdded = 0;
-
+        int startIndex;
         //dwie petle bo kazda z kazdym
         //jedna petla bo sprawdzam jedna nowo dodaną droge z pozostalymi
-        for (int i=0; i<routesCount; i++)
-        //int i = routesCount-1;
+        if (!checkAll) startIndex = routesCount-1;
+        else startIndex = 0;
+        //START
+        for (int i = startIndex; i<routesCount; i++)
             for (int j=0; j<routesCount; j++) {
-                Log.d("Debug Routes Count", Integer.toString(routesCount));
-                Log.d("Debug i", Integer.toString(i));
-                Log.d("Debug j", Integer.toString(j));
+                //Log.d("Debug Routes Count", Integer.toString(routesCount));
+                //Log.d("Debug i", Integer.toString(i));
+                //Log.d("Debug j", Integer.toString(j));
+                //Log.d("Debug k", Integer.toString(routes.get(i).getPointsNum()-1));
+                //Log.d("Debug l", Integer.toString(routes.get(j).getPointsNum()-1));
                 //latitude -90 - +90 - Y
                 //longitude -180 - +180 - X
                 //sprawdz zeby nie sprawdzac drogi samej z soba
@@ -191,7 +198,7 @@ public class RouteList {
 
                                 //wstaw obliczony punkt do obydwu sciezek
                                 crossPoint = sectionCrossingPoint(routes.get(i).getPoint(k), routes.get(i).getPoint(k + 1), routes.get(j).getPoint(l), routes.get(j).getPoint(l + 1));
-                                Log.d("Debug PUNKT", crossPoint.toString());
+                                //Log.d("Debug PUNKT", crossPoint.toString());
 
                                 routes.get(i).addPointI(k+1, crossPoint);
                                 routes.get(j).addPointI(l+1, crossPoint);
@@ -265,7 +272,7 @@ public class RouteList {
         //Save to file
         try{
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(appContext.openFileOutput("Rotues", Context.MODE_PRIVATE));
-            Log.d("Test", "Zrobilem: " + main.toString());
+            //Log.d("Test", "Zrobilem: " + main.toString());
             outputStreamWriter.write(main.toString());
             outputStreamWriter.close();
         }
@@ -276,31 +283,30 @@ public class RouteList {
     }
 
 
-    public ArrayList<Route> loadList() {
+    public ArrayList<Route> loadList(boolean example) {
         String revicedString = "";
-        Log.d("Test1", "Zrobilem: " + revicedString.toString());
-        try {
-            // Load GeoJSON file
-            /*
-            InputStream inputStream = appContext.openFileInput("Rotues");
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuilder stringBuilder = new StringBuilder();
-            while ((revicedString = bufferedReader.readLine()) != null) {
-                stringBuilder.append(revicedString);
+        if (example){
+            revicedString = appContext.getResources().getString(R.string.geojsonFile);
+            //Log.d("ddddddd",revicedString);
+        }else {
+            try {
+                // Load GeoJSON file
+                InputStream inputStream = appContext.openFileInput("Rotues");
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ((revicedString = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(revicedString);
+                }
+                revicedString = stringBuilder.toString();
+
+                //Log.d("Test", "Zrobilem: " + revicedString);
+                inputStream.close();
+
+            } catch (Exception e) {
+                //Log.e(null, "Exception Loading GeoJSON: " + e.toString());
             }
-            Log.d("Test", "Zrobilem: " + revicedString);
-            */
-
-            //inputStream.close();
-        } catch (Exception e) {
-            Log.e(null, "Exception Loading GeoJSON: " + e.toString());
         }
-
-        revicedString = appContext.getResources().getString(R.string.geojsonFile);
-        Log.d("ddddddd",revicedString);
-
-
-
             try {
                 // Parse GeoJSON
                 JSONObject main = new JSONObject(revicedString.toString());

@@ -2,13 +2,18 @@ package com.example.arravilar.firstapp;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,7 +33,8 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import java.util.ArrayList;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity
+        implements LoadFileDialogFragment.LoadFileDialogListener {
 
     private MapView mapView;
     private Context context;
@@ -36,6 +42,7 @@ public class MainActivity extends Activity {
 
     public Button btnSaveRoute;
     public Button btnRcrdRoute;
+    public Button btnFileLoad;
     public ToggleButton tglBtnCenter;
     public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
 
@@ -50,6 +57,7 @@ public class MainActivity extends Activity {
         btnRcrdRoute = (Button) findViewById(R.id.btnRcrdRoute);
         btnSaveRoute = (Button) findViewById(R.id.btnSaveRoute);
         tglBtnCenter = (ToggleButton) findViewById(R.id.centerButton);
+        btnFileLoad= (Button) findViewById(R.id.btnFileLoad);
         GlobalValues.getInstance().setRecordRoute(false);
 
 
@@ -200,7 +208,7 @@ public class MainActivity extends Activity {
             btnSaveRoute.setVisibility(View.INVISIBLE);
             //sprawdz czy ostatnio dodana przecina się z pozostałymi
             Log.d("123", GlobalValues.getInstance().getRouteList().getRoutes().get(GlobalValues.getInstance().getRouteList().getRouteNumber() - 1).getPoint(0).toString());
-            Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
+            Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing(false)));
         }
     }
 
@@ -218,13 +226,12 @@ public class MainActivity extends Activity {
                             mapboxMap.addPolyline(new PolylineOptions()
                                     .add(pointsArray)
                                     .color(Color.parseColor(MyColor.getInstance().getColor()))
-                                    //.color(Color.parseColor("#45df67"))
                                     .width(2));
                         }
                     });
                 }
             }
-        //Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
+        //Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing(true)));
 
     }
 
@@ -275,13 +282,47 @@ public class MainActivity extends Activity {
 
 
     public void loadFromFile(View v) {
-        if (GlobalValues.getInstance().getRouteList() == null) {
-            Log.d("ladowanie123", "1252123123");
+        //if (GlobalValues.getInstance().getRouteList() == null) {
             GlobalValues.getInstance().setRouteList(new RouteList(this));
-        }
-        Log.d("ladowanie", "1252123123");
-        GlobalValues.getInstance().getRouteList().loadList();
-        Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing()));
+        //}
+        //Otworz dialog
+        btnFileLoad.setText(R.string.loading);
+        btnFileLoad.setEnabled(false);
+
+        DialogFragment loadDialog = new LoadFileDialogFragment();
+        loadDialog.show(getFragmentManager(), "load");
+    }
+
+    private void showInfoDialog(String title, String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message)
+                .setTitle(title)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    //Do sth onclick
+                    }
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
+
+    //DIALOG
+    @Override
+    public void onLoadFileDialogPositiveClick(DialogFragment dialog) {
+        GlobalValues.getInstance().getRouteList().loadList(false);
+        Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing(true)));
+        btnFileLoad.setEnabled(true);
+        btnFileLoad.setText(R.string.loadfromfile);
+        showInfoDialog("Done",Integer.toString(GlobalValues.getInstance().getRouteList().getRouteNumber())+" routes loaded!");
+    }
+
+    @Override
+    public void onLoadFileDialogNegativeClick(DialogFragment dialog) {
+        GlobalValues.getInstance().getRouteList().loadList(true);
+        Log.d("TNE", Integer.toString(GlobalValues.getInstance().getRouteList().RouteMakeCrossing(true)));
+        btnFileLoad.setEnabled(true);
+        btnFileLoad.setText(R.string.loadfromfile);
+        showInfoDialog("Done", Integer.toString(GlobalValues.getInstance().getRouteList().getRouteNumber())+" routes loaded!");
     }
 
 

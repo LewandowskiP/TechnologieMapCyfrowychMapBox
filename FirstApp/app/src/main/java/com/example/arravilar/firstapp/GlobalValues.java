@@ -24,7 +24,7 @@ public class GlobalValues  {
     private GlobalValues()
     {
         recordRoute = false;
-        keepCentered = false;
+        keepCentered = true;
         routeList = null;
     }
     public static GlobalValues getInstance()

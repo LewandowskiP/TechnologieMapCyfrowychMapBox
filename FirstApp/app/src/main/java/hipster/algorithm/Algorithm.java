@@ -17,6 +17,8 @@
 package hipster.algorithm;
 
 
+import com.mapbox.mapboxsdk.geometry.LatLng;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -88,8 +90,19 @@ public abstract class Algorithm<A,S,N extends Node<A,S,N>> implements Iterable<N
             return goalNodes;
         }
 
+        public ArrayList<LatLng> getRoute(){
+            List<S> nodes = recoverStatePath(goalNodes.iterator().next());
+            ArrayList<LatLng> route = new ArrayList<>(nodes.size());
+            for(S node : nodes)
+            {
+                route.add((LatLng)node);
+            }
+            return route;
+        }
+
         public List<List<S>> getOptimalPaths() {
             List<List<S>> paths = new ArrayList<List<S>>(goalNodes.size());
+
             for(N goalNode : goalNodes){
                 paths.add(recoverStatePath(goalNode));
             }

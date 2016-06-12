@@ -120,10 +120,9 @@ public class MyRoute {
                 /*Algorithm<Void,LatLng,CostNode> sr = Hipster.createAStar(p);
 
                 sr.search(stopPos).ge*/
+                //Log.d("Wynik", Hipster.createAStar(p).search(stopPos).getRoute().toString());
 
-
-                Log.d("Wynik", Hipster.createAStar(p).search(stopPos).getOptimalPaths().toString());
-
+                result = Hipster.createAStar(p).search(stopPos).getRoute();
                 return result ;
             }
 

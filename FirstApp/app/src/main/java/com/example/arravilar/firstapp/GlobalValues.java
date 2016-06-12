@@ -3,6 +3,8 @@ package com.example.arravilar.firstapp;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
+import java.util.ArrayList;
+
 /**
  * Created by Przemysław on 2016-04-12.
  */
@@ -17,6 +19,7 @@ public class GlobalValues  {
     private LatLng lastLocation;
     private Marker startMarker;
     private Marker destMarker;
+    private ArrayList<LatLng> shortestWay;
 
     private GlobalValues()
     {
@@ -31,6 +34,9 @@ public class GlobalValues  {
         }
         return globalValues;
     }
+
+    public void setShortestWay(ArrayList<LatLng> way){shortestWay = way;}
+    public ArrayList<LatLng> getShortestWay() {return shortestWay;}
     public Marker getStartMarker() {return  startMarker;}
     public void setStartMarker(Marker marker) {startMarker = marker; }
     public Marker getDestMarker(){return destMarker;}

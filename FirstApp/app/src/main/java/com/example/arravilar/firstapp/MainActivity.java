@@ -234,30 +234,28 @@ public class MainActivity extends Activity {
         rtmc.convert(GlobalValues.getInstance().getRouteList());
         MyRoute mr = new MyRoute();
 
-       //LatLng startLocation = new LatLng(54.3707, 18.6147);
-
-
-        final LatLng startLocation = new LatLng(54.3707, 18.6147);
-
-        /*mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(final MapboxMap mapboxMap) {
-                startLocation.setLatitude(mapboxMap.getMyLocation().getLatitude());
-                startLocation.setLongitude(mapboxMap.getMyLocation().getLongitude());
-            }
-        });*/
-
+        //TODO: Punkt startowy na podstawie aktualnej lokalizacji
 
         Log.d("Szukam:", GlobalValues.getInstance().getStart().toString());
-        mr.findWay(new LatLng(GlobalValues.getInstance().getStart()), new LatLng(GlobalValues.getInstance().getDestination()));
-        
-        for (LatLng point:mr.getRoute()) {
-            Log.d("PUNKT SCIEZKI-->",point.toString());
-        }
+        GlobalValues.getInstance().setShortestWay(mr.findWay(
+                new LatLng(GlobalValues.getInstance().getStart()),
+                new LatLng(GlobalValues.getInstance().getDestination()))
+        );
 
-        Log.d("Szukam:", startLocation.toString());
-        if (mr.findWay(new LatLng(startLocation), new LatLng(GlobalValues.getInstance().getDestination()))!=null);
-
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(final MapboxMap mapboxMap) {
+                if (GlobalValues.getInstance().getShortestWay().size()>0) {
+                    LatLng[] pointsArray = GlobalValues.getInstance().getShortestWay().toArray(
+                            new LatLng[GlobalValues.getInstance().getShortestWay().size()]
+                    );
+                    mapboxMap.addPolyline(new PolylineOptions()
+                            .add(pointsArray)
+                            .color(Color.parseColor(MyColor.getInstance().getColor()))
+                            .width(8));
+                }
+            }
+        });
     }
 
 

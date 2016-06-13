@@ -19,6 +19,7 @@ public class GlobalValues  {
     private LatLng lastLocation;
     private Marker startMarker;
     private Marker destMarker;
+    private LatLng tempLoc;
     private ArrayList<LatLng> shortestWay;
 
     private GlobalValues()
@@ -34,7 +35,8 @@ public class GlobalValues  {
         }
         return globalValues;
     }
-
+    public void setTempLoc(LatLng point){ tempLoc = point;}
+    public LatLng getTempLoc() {return tempLoc;}
     public void setShortestWay(ArrayList<LatLng> way){shortestWay = way;}
     public ArrayList<LatLng> getShortestWay() {return shortestWay;}
     public Marker getStartMarker() {return  startMarker;}

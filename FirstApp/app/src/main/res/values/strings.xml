@@ -5,8 +5,9 @@
     <string name="loadfromfile">Load from file</string>
     <string name="dialog_load_file_caption">Achtung!</string>
     <string name="dialog_load_file_message">Loading GeoJSON file for the first time may take time...</string>
-    <string name="dialog_load_file_start">Load</string>
-    <string name="dialog_load_file_cancel">Cancel</string>
+    <string name="dialog_marker_type_start">Start</string>
+    <string name="dialog_marker_type_destination">Destination</string>
+    <string name="dialog_marker_type_caption">Type of marker</string>
     <string name="dialog_load_file_file">File</string>
     <string name="dialog_load_file_example">Example</string>
 </resources>

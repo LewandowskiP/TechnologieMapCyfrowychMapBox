@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends FragmentActivity
-        implements LoadFileDialogFragment.LoadFileDialogListener {
+        implements LoadFileDialogFragment.LoadFileDialogListener, MarkerTypeDialogFragment.MarkerTypeDialogListener {
 
     private MapView mapView;
     private Context context;
@@ -99,6 +99,9 @@ public class MainActivity extends FragmentActivity
                         //Schowaj window MARKERA
                         if (GlobalValues.getInstance().getDestMarker()!=null)
                             GlobalValues.getInstance().getDestMarker().hideInfoWindow();
+
+                        if (GlobalValues.getInstance().getStartMarker()!=null)
+                            GlobalValues.getInstance().getStartMarker().hideInfoWindow();
                         //Log.d("ZOOOOM",Double.toString(mapboxMap.getCameraPosition().zoom));
                     }
                 });
@@ -107,23 +110,10 @@ public class MainActivity extends FragmentActivity
                 mapboxMap.setOnMapLongClickListener(new MapboxMap.OnMapLongClickListener() {
                                                         @Override
                                                         public void onMapLongClick(@NonNull LatLng point) {
-                                                            GlobalValues.getInstance().setDestination(new LatLng(point));
-
-                                                            //Usun jesli juz byl
-                                                            if (GlobalValues.getInstance().getDestMarker()!=null) {
-                                                                Log.d("MAKRER","Dest Marker != Null");
-                                                                mapboxMap.removeMarker(GlobalValues.getInstance().getDestMarker());
-                                                            }
-                                                            //Dodaj MARKER
-                                                            GlobalValues.getInstance().setDestMarker(mapboxMap.addMarker(new MarkerOptions()
-                                                                    .position(point)
-                                                                    .title("Koniec \nLat: "+GlobalValues.getInstance().getDestination().getLatitude()
-                                                                            +"\nLon: "+GlobalValues.getInstance().getDestination().getLongitude())
-                                                                    )
-                                                            );
-                                                            //Show marker Info
-                                                            GlobalValues.getInstance().getDestMarker().showInfoWindow(mapboxMap, mapView);
-                                                            Log.d("Where is it", point.toString());
+                                                            Log.d("DDDDDDD",point.toString());
+                                                            GlobalValues.getInstance().setTempLoc(new LatLng(point));
+                                                            DialogFragment markerDialog = new MarkerTypeDialogFragment().newInstance(point);
+                                                            markerDialog.show(getFragmentManager(), "marekr");
                                                         }
                                                     }
 
@@ -293,6 +283,7 @@ public class MainActivity extends FragmentActivity
         loadDialog.show(getFragmentManager(), "load");
     }
 
+    //message popup
     private void showInfoDialog(String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message)
@@ -306,7 +297,66 @@ public class MainActivity extends FragmentActivity
         dialog.show();
     }
 
-    //DIALOG
+
+
+
+    //DIALOGS
+    @Override
+    public void onMarkerTypePositiveClick(DialogFragment dialog) { //DESTINATION
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(final MapboxMap mapboxMap) {
+
+                //Usun jesli juz byl
+                if (GlobalValues.getInstance().getDestMarker() != null) {
+                    Log.d("MAKRER", "Dest Marker != Null");
+                    mapboxMap.removeMarker(GlobalValues.getInstance().getDestMarker());
+                }
+
+                GlobalValues.getInstance().setDestination(GlobalValues.getInstance().getTempLoc());
+
+                //Dodaj MARKER
+                GlobalValues.getInstance().setDestMarker(mapboxMap.addMarker(new MarkerOptions()
+                                .position(GlobalValues.getInstance().getDestination())
+                                .title("Koniec \nLat: " + GlobalValues.getInstance().getDestination().getLatitude()
+                                        + "\nLon: " + GlobalValues.getInstance().getDestination().getLongitude())
+                        )
+                );
+                //Show marker Info
+                GlobalValues.getInstance().getDestMarker().showInfoWindow(mapboxMap, mapView);
+                Log.d("Where is it", GlobalValues.getInstance().getDestination().toString());
+            }
+        });
+    }
+
+    @Override
+    public void onMarkerTypeNegativeClick(DialogFragment dialog) {  //START
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(final MapboxMap mapboxMap) {
+
+                //Usun jesli juz byl
+                if (GlobalValues.getInstance().getStartMarker() != null) {
+                    Log.d("MAKRER", "Start Marker != Null");
+                    mapboxMap.removeMarker(GlobalValues.getInstance().getStartMarker());
+                }
+
+                GlobalValues.getInstance().setStart(GlobalValues.getInstance().getTempLoc());
+
+                //Dodaj MARKER
+                GlobalValues.getInstance().setStartMarker(mapboxMap.addMarker(new MarkerOptions()
+                                .position(GlobalValues.getInstance().getStart())
+                                .title("Koniec \nLat: " + GlobalValues.getInstance().getStart().getLatitude()
+                                        + "\nLon: " + GlobalValues.getInstance().getStart().getLongitude())
+                        )
+                );
+                //Show marker Info
+                GlobalValues.getInstance().getStartMarker().showInfoWindow(mapboxMap, mapView);
+                Log.d("Where is it", GlobalValues.getInstance().getStart().toString());
+            }
+        });
+    }
+
     @Override
     public void onLoadFileDialogPositiveClick(DialogFragment dialog) {
         GlobalValues.getInstance().getRouteList().loadList(false);
